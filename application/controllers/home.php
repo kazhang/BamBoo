@@ -5,6 +5,17 @@ class Home extends MY_Controller
 	 * Constructor
 	 *
 	 * @access 	public
+	 * @return 	void
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+	}
+
+	/**
+	 * Default page
+	 *
+	 * @access 	public
 	 * @param	int		page number
 	 * @return 	void
 	 */
