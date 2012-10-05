@@ -11,6 +11,7 @@ class Posts extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('post_mdl');
+		$this->load->model('tag_mdl');
 	}
 
 	/**
@@ -46,13 +47,59 @@ class Posts extends CI_Controller
 				$postData['status']=0;
 				$postData['comment_cnt']=0;
 
-				echo $this->post_mdl->addPost($postData);
+				$tags=explode(',',$postData['tags']);
+				unset($postData['tags']);
+
+				$postID=$this->post_mdl->addPost($postData);
+
+				$this->_setTagsPostRelation($tags,$postID);
 			}
 		}
 		//edit article
 		else if(is_numeric($postID))
 		{
-			echo "write",$postID;
+			$postData=$this->post_mdl->getPostByPostID($postID);
+
+			if($postData == FALSE)
+			{
+				show_404();
+			}
+
+			$postData['created']=Common::timestamp2date($postData['created']);
+			$postData['created']=$postData['created']['string'];
+
+			$data['pageTitle']='编辑文章';
+			$data['post']=$postData;
+
+			$oldTags=$this->tag_mdl->getTagsByPostID($postID);
+			$oldTags=$this->_getTagsName($oldTags);
+			if(!empty($oldTags))
+			{
+				$data['tags']=implode(',',$oldTags);
+			}
+			else
+			{
+				$data['tags']='';
+			}
+
+			if($this->form_validation->run() == FALSE)
+			{
+				$this->load->view('admin/post_write',$data);
+			}
+			else
+			{
+				$postData=$this->_getPostData();
+				$postData['created']=Common::date2timestamp($postData['created']);
+				$postData['modified']=time();
+
+				$newTags=$postData['tags'];
+				$newTags=explode(',',$newTags);
+				unset($postData['tags']);
+
+				$this->post_mdl->updatePost($postID,$postData);
+
+				$this->_rebuildTagsPostRelation($oldTags,$newTags,$postID);
+			}
 		}
 		else
 		{
@@ -72,12 +119,89 @@ class Posts extends CI_Controller
 			'title'		=> $this->input->post('title'),
 			'slug'		=> $this->input->post('slug'),
 			'content'	=> $this->input->post('content'),
-			//'tags'		=> $this->input->post('tags'),
+			'tags'		=> $this->input->post('tags'),
 			//'category'	=> $this->input->post('category'),
 			'created'	=> $this->input->post('created'),
 			'allow_comment' => ($this->input->post('allowComment')?1:0),
 			'allow_feed'	=> ($this->input->post('allowFeed')?1:0)
 		);
+	}
+
+	/**
+	 * Set up relation between tags and post
+	 *
+	 * @access 	private
+	 * @param 	array	tags' name
+	 * @param	int		post ID
+	 * @return 	void
+	 */
+	private function _setTagsPostRelation($tags,$postID)
+	{
+		foreach($tags as $tag)
+		{
+			$this->tag_mdl->setTagPostRalation($tag,$postID);
+		}
+	}
+
+	/**
+	 * Remove relation between tags and post
+	 *
+	 * @access 	private
+	 * @param	array	tags' name
+	 * @param	int		post ID
+	 * @return	void
+	 */
+	private function _removeTagsPostRelation($tags,$postID)
+	{
+		foreach($tags as $tag)
+		{
+			$this->tag_mdl->removeTagPostRelation($tag,$postID);
+		}
+	}
+
+	/**
+	 * Rebuild relation between tags and post
+	 *
+	 * @access	private
+	 * @param	array	old tags' name
+	 * @param	array	new tags' name
+	 * @param	int		post ID
+	 * @return void
+	 */
+	private function _rebuildTagsPostRelation($oldTags,$newTags,$postID)
+	{
+		if(empty($oldTags) && empty($newTags))return;
+
+		$rmTags=array();
+		foreach($oldTags as $tag)
+		{
+			if(!in_array($tag,$newTags))
+				$rmTags[]=$tag;
+		}
+		$this->_removeTagsPostRelation($rmTags,$postID);
+
+		$setTags=array();
+		foreach($newTags as $tag)
+		{
+			if(!in_array($tag,$oldTags))
+				$setTags[]=$tag;
+		}
+		$this->_setTagsPostRelation($setTags,$postID);
+	}
+
+	/**
+	 * Get tags' name from result_row
+	 *
+	 * @access 	private
+	 * @param	array
+	 * @return 	array
+	 */
+	private function _getTagsName($tags)
+	{
+		$res=array();
+		foreach($tags as $tag)
+			$res[]=$tag['name'];
+		return $res;
 	}
 }
 /* End of file posts.php */

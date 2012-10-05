@@ -26,7 +26,7 @@ class Post_mdl extends CI_Model
 	{
 		$query=$this->db->get(self::POSTS);
 
-		return $query->result();
+		return $query->result_array();
 	}
 
 	/**
@@ -34,20 +34,17 @@ class Post_mdl extends CI_Model
 	 *
 	 * @access 	public
 	 * @param	int		post_ID
-	 * @return	mixed	{object | FALSE}
+	 * @return	mixed	{array | FALSE}
 	 */
 	public function getPostByPostID($post_ID)
 	{
 		$this->db->where('post_ID',$post_ID);
 		$query=$this->db->get(self::POSTS);
-		$res=$query->result();
 
-		if($res === FALSE)
-		{
-			return FALSE;
-		}
+		if($query->num_rows()>0)
+			return $query->row_array();
 
-		return $res[0];
+		return FALSE;
 	}
 
 	/**
@@ -55,20 +52,17 @@ class Post_mdl extends CI_Model
 	 * 
 	 * @access 	public
 	 * @param	string	article's slug
-	 * @return	mixed	{object | FALSE}
+	 * @return	mixed	{array | FALSE}
 	 */
 	public function getPostBySlug($slug)
 	{
 		$this->db->where('slug',$slut);
 		$query = $this->db->get(self::POSTS);
-		$res = $query->result();
 
-		if($res === FALSE)
-		{
-			return FALSE;
-		}
+		if($query->num_rows()>0)
+			return $query->row_array();
 
-		return $res[0];
+		return FALSE;
 	}
 
 	/**
