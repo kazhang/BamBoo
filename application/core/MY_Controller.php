@@ -1,15 +1,16 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class BB_Controller extends CI_Controller
+class MY_Controller extends CI_Controller
 {
 	/**
 	 * Constructor
 	 * 
-	 * @access protected 
+	 * @access public
 	 * @return void
 	 */
-	protected function __construct()
+	public function __construct()
 	{
 		parent::__construct();
+		$this->load->switchThemeOn();
 	}
 
 	/**
@@ -21,7 +22,7 @@ class BB_Controller extends CI_Controller
 	 * @param boolean	send to browser
 	 * @return void
 	 */
-	protected function load_theme_view($view,$vars=array(),$return=FALSE)
+	protected function loadThemeView($view,$vars=array(),$return=FALSE)
 	{
 		if(file_exists(FCPATH.'themes'.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.$view.'.php'))
 		{
@@ -34,6 +35,6 @@ class BB_Controller extends CI_Controller
 	}
 
 }
-/* End of file BB_Controller.php */
-/* Location: ./application/libraries/BB_Controller.php */
+/* End of file MY_Controller.php */
+/* Location: ./application/core/MY_Controller.php */
 ?>
