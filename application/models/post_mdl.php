@@ -20,10 +20,12 @@ class Post_mdl extends CI_Model
 	 * Get all articles
 	 * 
 	 * @access 	public
+	 * @param	int		status
 	 * @return	array
 	 */
-	public function getPosts()
+	public function getPosts($status = 1)
 	{
+		$this->db->where('status >=',$status);
 		$query=$this->db->get(self::POSTS);
 
 		return $query->result_array();
@@ -90,6 +92,22 @@ class Post_mdl extends CI_Model
 	{
 		$this->db->where('post_ID',intval($post_ID));
 		$this->db->update(self::POSTS,$postData);
+
+		return $this->db->affected_rows()>0;
+	}
+
+	/**
+	 * Change status of an article
+	 *
+	 * @access	public
+	 * @param	int		post_ID
+	 * @param	int		new status
+	 * @return	boolean
+	 */
+	public function updateStatus($post_ID,$status)
+	{
+		$this->db->where('post_ID',$post_ID);
+		$this->db->update(self::POSTS,array('status'=>$status));
 
 		return $this->db->affected_rows()>0;
 	}

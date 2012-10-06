@@ -33,7 +33,7 @@
 			</div>
 			<div><input type="checkbox" name="allowComment" <?php if(isset($post) && $post['allow_comment']==1) echo 'checked';?>/>允许评论</div>
 			<div><input type="checkbox" name="allowFeed" <?php if(isset($post) && $post['allow_feed']==1) echo 'checked';?>/>允许Feed</div>
-			<div><input type="submit" value="保存草稿"/><input type="submit" name="publish" value="发布"/></div>
+			<div><input type="submit" value="保存为草稿"/><input type="submit" name="publish" value="发布"/></div>
 		</form>
 	</div><!--end of main-->
 <?php $this->load->view('admin/footer');?>

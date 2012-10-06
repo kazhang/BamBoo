@@ -28,15 +28,43 @@ class Category_mdl extends CI_Model
 	 *
 	 * @access 	public
 	 * @param	int		post ID
+	 * @param	string	fields
 	 * @return	array
 	 */
-	public function getCategoriesByPostID($post_ID)
+	public function getCategoriesByPostID($post_ID,$fields = NULL)
 	{	
-		$this->db->select('*');
+		if($fields === NULL)
+		{
+			$this->db->select('*');
+		}
+		else
+		{
+			$this->db->select($fields);
+		}
 		$this->db->from(self::CATEGORIES);
-		$this->db->join(self::POST_CATEGORY,self::CATEGORIES.'.category_ID = '.self::POST_CATEGORY.'.category_ID');
+		$this->db->join(self::POST_CATEGORY,self::CATEGORIES.'.category_ID = '.self::POST_CATEGORY.'.category_ID','inner');
 		$this->db->where('post_ID',$post_ID);
 		$query=$this->db->get();
+
+		if($query->num_rows()>0)
+		{
+			return $query->result_array();
+		}
+
+		return array();
+	}
+
+	/**
+	 * Look into relation table and get ID of categories related to an article
+	 *
+	 * @access	public
+	 * @param	int		post_ID
+	 * @return 	array
+	 */
+	public function getCategoriesIDByPostID($post_ID)
+	{
+		$this->db->where('post_ID',$post_ID);
+		$query=$this->db->get(self::POST_CATEGORY);
 
 		if($query->num_rows()>0)
 		{
@@ -110,8 +138,6 @@ class Category_mdl extends CI_Model
 	{
 		$this->db->insert(self::POST_CATEGORY,array('category_ID'=>$categoryID,'post_ID'=>$postID));
 
-		$this->categoryCountPlus($categoryID,1);
-
 		return $this->db->affected_rows()>0;
 	}
 
@@ -128,8 +154,6 @@ class Category_mdl extends CI_Model
 		$this->db->where('category_ID',$categoryID);
 		$this->db->where('post_ID',$postID);
 		$this->db->delete(self::POST_CATEGORY);
-
-		$this->categoryCountPlus($categoryID,-1);
 
 		return $this->db->affected_rows()>0;
 	}

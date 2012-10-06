@@ -95,15 +95,43 @@ class Tag_mdl extends CI_Model
 	 *
 	 * @access 	public
 	 * @param	int		post_ID
+	 * @param	string	field
 	 * @return	array
 	 */
-	public function getTagsByPostID($post_ID)
+	public function getTagsByPostID($post_ID,$field = NULL)
 	{
-		$this->db->select('*');
+		if($field === NULL)
+		{
+			$this->db->select('*');
+		}
+		else
+		{
+			$this->db->select($field);
+		}
 		$this->db->from(self::TAGS);
-		$this->db->join(self::POST_TAG,self::TAGS.'.tag_ID = '.self::POST_TAG.'.tag_ID');
+		$this->db->join(self::POST_TAG,self::TAGS.'.tag_ID = '.self::POST_TAG.'.tag_ID','inner');
 		$this->db->where('post_ID',$post_ID);
 		$query=$this->db->get();
+
+		if($query->num_rows()>0)
+		{
+			return $query->result_array();
+		}
+
+		return array();
+	}
+
+	/**
+	 * Look into relation table and get ID of tags related to an article
+	 *
+	 * @access	public
+	 * @param	int		post_ID
+	 * @return 	array
+	 */
+	public function getTagsIDByPostID($post_ID)
+	{
+		$this->db->where('post_ID',$post_ID);
+		$query=$this->db->get(self::POST_TAG);
 
 		if($query->num_rows()>0)
 		{
@@ -136,7 +164,6 @@ class Tag_mdl extends CI_Model
 		}
 
 		$this->db->insert(self::POST_TAG,array('tag_ID'=>$tag_ID,'post_ID'=>$post_ID));
-		$this->tagCountPlus($tag_ID,1);
 		return $this->db->affected_rows()>0;
 	}
 
@@ -166,8 +193,6 @@ class Tag_mdl extends CI_Model
 		$this->db->where('tag_ID',$tag_ID);
 		$this->db->where('post_ID',$post_ID);
 		$this->db->delete(self::POST_TAG);
-
-		$this->tagCountPlus($tag_ID,-1);
 		return $this->db->affected_rows()>0;
 	}
 
@@ -175,13 +200,22 @@ class Tag_mdl extends CI_Model
 	 * Increase value of tag count
 	 * 
 	 * @access 	public
-	 * @param	int		tag_ID
+	 * @param	int|string		tag_ID or name
 	 * @param	int		increment	
+	 * @param	string	by name or ID
 	 * @return boolean
 	 */
-	public function tagCountPlus($tag_ID,$delta)
+	public function tagCountPlus($key,$delta,$term = 'ID')
 	{
-		$this->db->query("UPDATE ".self::TAGS." SET `count`=(`count`+$delta) WHERE `tag_ID`=$tag_ID");
+		if($term=='ID')
+		{
+			$this->db->query("UPDATE ".self::TAGS." SET `count`=(`count`+$delta) WHERE `tag_ID`=$key");
+		}
+		//TODO addsplash
+		else if($term=='name')
+		{
+			$this->db->query("UPDATE ".self::TAGS." SET `count`=(`count`+$delta) WHERE `name`='$key'");
+		}
 
 		return $this->db->affected_rows();
 	}

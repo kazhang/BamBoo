@@ -16,6 +16,32 @@ class Posts extends CI_Controller
 	}
 
 	/**
+	 * Default page
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function index()
+	{
+		$data['pageTitle']='文章';
+
+		$data['posts']=$this->post_mdl->getPosts(0);
+
+		foreach($data['posts'] as $key=>$value)
+		{
+			$tags=$this->tag_mdl->getTagsByPostID($value['post_ID'],'name');
+			$tags=Common::getField('name',$tags);
+			$data['posts'][$key]['tags']=implode(',',$tags);
+
+			$categories=$this->category_mdl->getCategoriesByPostID($value['post_ID'],'name');
+			$categories=Common::getField('name',$categories);
+			$data['posts'][$key]['categories']=implode(',',$categories);
+		}
+
+		$this->load->view('admin/posts',$data);
+	}
+
+	/**
 	 * Write or edit post
 	 * 
 	 * @access public
@@ -44,12 +70,14 @@ class Posts extends CI_Controller
 			}
 			else
 			{
+				$isPublished=($this->input->post('publish') === FALSE ? FALSE : TRUE);
+
 				$postData=$this->_getPostData();
 				$postData['created']=time();
 				$postData['modified']=time();
 				$postData['author_ID']=1;
 				$postData['type']='post';
-				$postData['status']=0;
+				$postData['status']= $isPublished ? 1 : 0;
 				$postData['comment_cnt']=0;
 
 				$tags=$postData['tags'];
@@ -64,6 +92,13 @@ class Posts extends CI_Controller
 
 				$this->_setTagsPostRelation($tags,$postID);
 				$this->_setCategoriesPostRelation($categories,$postID);
+
+				if($isPublished)
+				{
+					$this->_updateCount($tags,$categories,1);
+				}
+
+				redirect('admin/posts/write/'.$postID);
 			}
 		}
 		//edit article
@@ -106,9 +141,13 @@ class Posts extends CI_Controller
 			}
 			else
 			{
+				$isPublished=($this->input->post('publish') === FALSE ? FALSE : TRUE);
+
 				$postData=$this->_getPostData();
 				$postData['created']=Common::date2timestamp($postData['created']);
 				$postData['modified']=time();
+
+				$postData['status']=$isPublished?1:0;
 
 				$newTags=$postData['tags'];
 				$newTags=str_replace('，',',',$newTags);
@@ -118,16 +157,75 @@ class Posts extends CI_Controller
 				$newCategories=$postData['categories'];
 				unset($postData['categories']);
 
+				if($isPublished)
+				{
+					$postData['status']=1;
+				}
+
 				$this->post_mdl->updatePost($postID,$postData);
 
 				$this->_rebuildTagsPostRelation($oldTags,$newTags,$postID);
 				$this->_rebuildCategoriesPostRelation($oldCategories,$newCategories,$postID);
+
+				if($data['post']['status']==1)
+				{
+					$this->_updateCount($oldTags,$oldCategories,-1);
+				}
+
+				if($isPublished)
+				{
+					$this->_updateCount($newTags,$newCategories,1);
+				}
+
+				redirect('admin/posts/write/'.$postID);
 			}
 		}
 		else
 		{
 			show_404();
 		}
+	}
+
+	/**
+	 * Put the post into trash
+	 * 
+	 * @access 	public
+	 * @param	int		post ID
+	 * @return void
+	 */
+	public function trash($post_ID,$updateCnt = FALSE)
+	{
+		$this->post_mdl->updateStatus($post_ID,-1);
+
+		if($updateCnt == 1)
+		{
+			$tags=$this->tag_mdl->getTagsIDByPostID($post_ID,'tag_ID');	
+			foreach($tags as $tag)
+			{
+				$this->tag_mdl->tagCountPlus($tag['tag_ID'],-1);
+			}
+
+			$categories=$this->category_mdl->getCategoriesIDByPostID($post_ID,'category_ID');
+			foreach($categories as $cate)
+			{
+				$this->category_mdl->categoryCountPlus($cate['category_ID'],-1);
+			}
+		}
+		redirect('admin/posts');
+	}
+
+	/**
+	 * Pick up post from trash and save as draft
+	 *
+	 * @access	public
+	 * @param	int		post ID
+	 * @return void
+	 */
+	public function recover($post_ID)
+	{
+		$this->post_mdl->updateStatus($post_ID,0);
+
+		redirect('admin/posts');
 	}
 
 	/**
@@ -222,6 +320,7 @@ class Posts extends CI_Controller
 	 */
 	private function _setCategoriesPostRelation($categories,$postID)
 	{
+		if($categories==FALSE)return;
 		foreach($categories as $item)
 		{
 			$this->category_mdl->setCategoryPostRelation($item,$postID);
@@ -238,6 +337,7 @@ class Posts extends CI_Controller
 	 */
 	private function _removeCategoryPostRelation($categories,$postID)
 	{
+		if($categories==FALSE)return;
 		foreach($categories as $item)
 		{
 			$this->category_mdl->removeCategoryPostRelation($item,$postID);
@@ -255,21 +355,56 @@ class Posts extends CI_Controller
 	private function _rebuildCategoriesPostRelation($oldCategories,$newCategories,$postID)
 	{
 		$rmCate=array();
-		foreach($oldCategories as $item)
+		if(!empty($oldCategories))
 		{
-			if(!in_array($item,$newCategories))
-				$rmCate[]=$item;
+			foreach($oldCategories as $item)
+			{
+				if(!in_array($item,$newCategories))
+					$rmCate[]=$item;
+			}
 		}
 		$this->_removeCategoryPostRelation($rmCate,$postID);
 
 		$setCate=array();
-		foreach($newCategories as $item)
+		if(!empty($newCategories))
 		{
-			if(!in_array($item,$oldCategories))
-				$setCate[]=$item;
+			foreach($newCategories as $item)
+			{
+				if(!in_array($item,$oldCategories))
+					$setCate[]=$item;
+			}
 		}
 		$this->_setCategoriesPostRelation($setCate,$postID);
 	}
+
+	/**
+	 * update count of tag and category
+	 *
+	 * @access	private
+	 * @param	array	tags name
+	 * @param	array	catgories ID
+	 * @param	int		delta
+	 * @return	void
+	 */
+	private function _updateCount($tags,$categories,$delta)
+	{
+		if(!empty($tags))
+		{
+			foreach($tags as $tag)
+			{
+				$this->tag_mdl->tagCountPlus($tag,$delta,'name');
+			}
+		}
+
+		if(!empty($categories))
+		{
+			foreach($categories as $cate)
+			{
+				$this->category_mdl->categoryCountPlus($cate,$delta);
+			}
+		}
+	}
+
 }
 /* End of file posts.php */
 /* Location: ./application/controllers/admin/posts.php */
