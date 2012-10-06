@@ -12,6 +12,7 @@ class Posts extends CI_Controller
 		parent::__construct();
 		$this->load->model('post_mdl');
 		$this->load->model('tag_mdl');
+		$this->load->model('category_mdl');
 	}
 
 	/**
@@ -32,9 +33,13 @@ class Posts extends CI_Controller
 		//write new article
 		if($postID === NULL)
 		{
-			$data['pageTitle']='写文章';
 			if($this->form_validation->run() == FALSE)
 			{
+				$data['pageTitle']='写文章';
+
+				$data['categories']=$this->category_mdl->getCategories('category_ID,name,parent_ID');
+				$data['categories']=$this->category_mdl->setLevelCategory($data['categories']);
+
 				$this->load->view('admin/post_write',$data);
 			}
 			else
@@ -47,12 +52,18 @@ class Posts extends CI_Controller
 				$postData['status']=0;
 				$postData['comment_cnt']=0;
 
-				$tags=explode(',',$postData['tags']);
+				$tags=$postData['tags'];
+				$tags=str_replace('，',',',$tags);
+				$tags=array_unique(array_map('trim',explode(',',$tags)));
 				unset($postData['tags']);
+
+				$categories=$postData['categories'];
+				unset($postData['categories']);
 
 				$postID=$this->post_mdl->addPost($postData);
 
 				$this->_setTagsPostRelation($tags,$postID);
+				$this->_setCategoriesPostRelation($categories,$postID);
 			}
 		}
 		//edit article
@@ -68,22 +79,29 @@ class Posts extends CI_Controller
 			$postData['created']=Common::timestamp2date($postData['created']);
 			$postData['created']=$postData['created']['string'];
 
-			$data['pageTitle']='编辑文章';
-			$data['post']=$postData;
-
 			$oldTags=$this->tag_mdl->getTagsByPostID($postID);
-			$oldTags=$this->_getTagsName($oldTags);
+			$oldTags=Common::getField('name',$oldTags);
 			if(!empty($oldTags))
 			{
-				$data['tags']=implode(',',$oldTags);
+				$postData['tags']=implode(',',$oldTags);
 			}
 			else
 			{
-				$data['tags']='';
+				$postData['tags']='';
 			}
+
+			$oldCategories=$this->category_mdl->getCategoriesByPostID($postID);
+			$oldCategories=Common::getField('category_ID',$oldCategories);
+			$postData['categories']=$oldCategories;
+
+			$data['pageTitle']='编辑文章';
+			$data['post']=$postData;
 
 			if($this->form_validation->run() == FALSE)
 			{
+				$data['categories']=$this->category_mdl->getCategories('category_ID,name,parent_ID');
+				$data['categories']=$this->category_mdl->setLevelCategory($data['categories']);
+
 				$this->load->view('admin/post_write',$data);
 			}
 			else
@@ -93,12 +111,17 @@ class Posts extends CI_Controller
 				$postData['modified']=time();
 
 				$newTags=$postData['tags'];
-				$newTags=explode(',',$newTags);
+				$newTags=str_replace('，',',',$newTags);
+				$newTags=array_unique(array_map('trim',explode(',',$newTags)));
 				unset($postData['tags']);
+
+				$newCategories=$postData['categories'];
+				unset($postData['categories']);
 
 				$this->post_mdl->updatePost($postID,$postData);
 
 				$this->_rebuildTagsPostRelation($oldTags,$newTags,$postID);
+				$this->_rebuildCategoriesPostRelation($oldCategories,$newCategories,$postID);
 			}
 		}
 		else
@@ -120,7 +143,7 @@ class Posts extends CI_Controller
 			'slug'		=> $this->input->post('slug'),
 			'content'	=> $this->input->post('content'),
 			'tags'		=> $this->input->post('tags'),
-			//'category'	=> $this->input->post('category'),
+			'categories'	=> $this->input->post('categories'),
 			'created'	=> $this->input->post('created'),
 			'allow_comment' => ($this->input->post('allowComment')?1:0),
 			'allow_feed'	=> ($this->input->post('allowFeed')?1:0)
@@ -190,18 +213,62 @@ class Posts extends CI_Controller
 	}
 
 	/**
-	 * Get tags' name from result_row
+	 * Set up relationship between categories and post
 	 *
 	 * @access 	private
-	 * @param	array
-	 * @return 	array
+	 * @param	array	categories ID
+	 * @param	int		post ID
+	 * @return 	void
 	 */
-	private function _getTagsName($tags)
+	private function _setCategoriesPostRelation($categories,$postID)
 	{
-		$res=array();
-		foreach($tags as $tag)
-			$res[]=$tag['name'];
-		return $res;
+		foreach($categories as $item)
+		{
+			$this->category_mdl->setCategoryPostRelation($item,$postID);
+		}
+	}
+
+	/**
+	 * Remove relationship between categories and post
+	 *
+	 * @access 	private
+	 * @param	array	categories ID
+	 * @param	int		post ID
+	 * @return 	void
+	 */
+	private function _removeCategoryPostRelation($categories,$postID)
+	{
+		foreach($categories as $item)
+		{
+			$this->category_mdl->removeCategoryPostRelation($item,$postID);
+		}
+	}
+
+	/**
+	 * Rebuild relationship between categories and post
+	 *
+	 * @access 	private
+	 * @param	array	old categories ID
+	 * @param	array	new categories ID
+	 * @param	int		post ID
+	 */
+	private function _rebuildCategoriesPostRelation($oldCategories,$newCategories,$postID)
+	{
+		$rmCate=array();
+		foreach($oldCategories as $item)
+		{
+			if(!in_array($item,$newCategories))
+				$rmCate[]=$item;
+		}
+		$this->_removeCategoryPostRelation($rmCate,$postID);
+
+		$setCate=array();
+		foreach($newCategories as $item)
+		{
+			if(!in_array($item,$oldCategories))
+				$setCate[]=$item;
+		}
+		$this->_setCategoriesPostRelation($setCate,$postID);
 	}
 }
 /* End of file posts.php */

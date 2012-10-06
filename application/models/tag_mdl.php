@@ -136,7 +136,7 @@ class Tag_mdl extends CI_Model
 		}
 
 		$this->db->insert(self::POST_TAG,array('tag_ID'=>$tag_ID,'post_ID'=>$post_ID));
-		$this->tagCountPlus($tag_ID);
+		$this->tagCountPlus($tag_ID,1);
 		return $this->db->affected_rows()>0;
 	}
 
@@ -179,7 +179,7 @@ class Tag_mdl extends CI_Model
 	 * @param	int		increment	
 	 * @return boolean
 	 */
-	public function tagCountPlus($tag_ID,$delta = 1)
+	public function tagCountPlus($tag_ID,$delta)
 	{
 		$this->db->query("UPDATE ".self::TAGS." SET `count`=(`count`+$delta) WHERE `tag_ID`=$tag_ID");
 

@@ -37,6 +37,21 @@ class Common
 
 		return mktime($hour,$minute,$second,$month,$day,$year);
 	}
+
+	/**
+	 * Get required field from result row
+	 *
+	 * @access 	public
+	 * @param	string	required field
+	 * @param	array	result row
+	 */
+	static public function getField($field,$rows)
+	{
+		$res=array();
+		foreach($rows as $item)
+			$res[]=$item[$field];
+		return $res;
+	}
 }
 /* End of file Common.php */
 /* Location: ./application/libraries/Common.php */
