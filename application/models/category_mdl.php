@@ -75,6 +75,25 @@ class Category_mdl extends CI_Model
 	}
 
 	/**
+	 * Get a category by ID
+	 * 
+	 * @access	public
+	 * @param	int		category ID
+	 * @return 	mixed	array|FALSE
+	 */
+	public function getCategoryByID($category_ID)
+	{
+		$this->db->where('category_ID',$category_ID);
+		$query=$this->db->get(self::CATEGORIES);
+
+		if($query->num_rows()>0)
+		{
+			return $query->row_array();
+		}
+		return FALSE;
+	}
+
+	/**
 	 * Add a new category
 	 *
 	 * @access 	public
@@ -86,6 +105,47 @@ class Category_mdl extends CI_Model
 		$this->db->insert(self::CATEGORIES,$data);
 
 		return $this->db->insert_id();
+	}
+
+	/**
+	 * Update a categroy information
+	 *
+	 * @access	public
+	 * @param	int		category ID
+	 * @param	array
+	 * @return 	boolean
+	 */
+	public function updateCategory($categoryID,$data)
+	{
+		$this->db->where('category_ID',$categoryID);
+		$this->db->update(self::CATEGORIES,$data);
+
+		return $this->db->affected_rows()>0;
+	}
+
+	/**
+	 * Delete a category and remove all relationship with post
+	 *
+	 * @access	public
+	 * @param	int		category ID
+	 * @return 	boolean
+	 */
+	public function deleteCategory($categoryID)
+	{
+		$category=$this->getCategoryByID($categoryID);
+		if($category==FALSE)return FALSE;
+
+		//if the category is top category set all children of it to top category
+		if($category['parent_ID']==0)
+		{
+			$this->db->where('parent_ID',$categoryID);
+			$this->db->update(self::CATEGORIES,array('parent_ID'=>0));
+		}
+
+		$this->db->where('category_ID',$categoryID);
+		$this->db->delete(array(self::CATEGORIES,self::POST_CATEGORY));
+
+		return $this->db->affected_rows()>0;
 	}
 
 	/**

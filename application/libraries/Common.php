@@ -72,6 +72,26 @@ class Common
 		}
 		return implode('、',$buf);
 	}
+
+	/**
+	 * strip invalid characters to build a slug
+	 *
+	 * @access	public
+	 * @param	string	str
+	 * @param	string	default value
+	 * @param	int		maxLength
+	 * @param	string	charset
+	 * @return 	string
+	 */
+	static public function repairSlugName($str,$default = NULL,$maxLength = 100,$charset = 'UTF-8')
+	{
+		$str = str_replace(array("'", ":", "\\", "/"), "", $str);
+		$str = str_replace(array("+", ",", " ", ".", "?", "=", "&", "!", "<", ">", "(", ")", "[", "]", "{", "}"), "_", $str);
+		//$str = trim($str,'_');
+		$str = empty($str) ? $default : $str;
+
+		return function_exists('mb_get_info') ? mb_strimwidth($str, 0, $maxLength, '', $charset) : substr($str, $maxLength);
+	}
 }
 /* End of file Common.php */
 /* Location: ./application/libraries/Common.php */

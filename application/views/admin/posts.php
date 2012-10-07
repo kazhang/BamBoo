@@ -1,5 +1,6 @@
 <?php $this->load->view('admin/header');?>
 	<div class="main">
+<?php $this->load->view('admin/sidebar');?>
 		<h3>文章</h3>
 		<table>
 			<tr>

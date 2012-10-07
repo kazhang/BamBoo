@@ -23,6 +23,22 @@ class Tag_mdl extends CI_Model
 	}
 
 	/**
+	 * Get all tags
+	 * 
+	 * @access	public
+	 * @return	array
+	 */
+	public function getTags()
+	{
+		$query=$this->db->get(self::TAGS);
+		if($query->num_rows()>0)
+		{
+			return $query->result_array();
+		}
+		return array();
+	}
+
+	/**
 	 * Get tag name by tag_ID
 	 *
 	 * @access 	pubilc
@@ -71,6 +87,32 @@ class Tag_mdl extends CI_Model
 	}
 
 	/**
+	 * Get tag information by slug
+	 *
+	 * @access 	public
+	 * @param	string	tag slug
+	 * @param	string	field
+	 * @return 	mixed	{array | FALSE}
+	 */
+	public function getTagBySlug($slug,$field = NULL)
+	{
+		if($field !== NULL)
+		{
+			$this->db->select($field);
+		}
+	
+		$this->db->where('slug',$slug);
+		$query=$this->db->get(self::TAGS);
+		
+		if($query->num_rows()>0)
+		{
+			return $query->row_array();
+		}
+
+		return FALSE;
+	}
+
+	/**
 	 * Add a tag
 	 *
 	 * @access 	public
@@ -78,22 +120,56 @@ class Tag_mdl extends CI_Model
 	 * @param	string	tag description
 	 * @return 	int		tag_ID
 	 */
-	public function addTag($name,$description = NULL)
+	public function addTag($name,$slug = NULL,$description = NULL)
 	{
 
 		if($slug === NULL)
 		{
-			$slug=urlencode($name);
+			$slug=$name;
 		}
+		$slug=Common::repairSlugName($slug);
 
-		if($description === NULL)
+		//if there already exists a same slug
+		$t=$this->getTagBySlug($slug,'tag_ID');
+		if($t !== FALSE)
 		{
-			$description=$name;
+			return $t['tag_ID'];
 		}
 
 		$this->db->insert(self::TAGS,array('name'=>$name,'slug'=>$slug,'description'=>$description));
 
 		return $this->db->insert_id();
+	}
+
+	/**
+	 * Update tag information
+	 *
+	 * @access	pubilc
+	 * @param	int		tag ID
+	 * @param	array	data
+	 * @return 	boolean
+	 */
+	public function updateTag($tagID,$data)
+	{
+		$this->db->where('tag_ID',$tagID);
+		$this->db->update(self::TAGS,$data);
+
+		return $this->db->affected_rows()>0;
+	}
+
+	/**
+	 * Delete a tag and remove all relation with post
+	 *
+	 * @access 	public
+	 * @param	int		tag ID
+	 * @return 	boolean
+	 */
+	public function deleteTag($tagID)
+	{
+		$this->db->where('tag_ID',$tagID);
+		$this->db->delete(array(self::TAGS,self::POST_TAG));
+
+		return $this->db->affected_rows()>0;
 	}
 
 	/**
@@ -125,6 +201,25 @@ class Tag_mdl extends CI_Model
 		}
 
 		return array();
+	}
+
+	/**
+	 * Get a tag by ID
+	 * 
+	 * @access	public
+	 * @param	int		tag ID
+	 * @return 	mixed	array|FALSE
+	 */
+	public function getTagByID($tagID)
+	{
+		$this->db->where('tag_ID',$tagID);
+		$query=$this->db->get(self::TAGS);
+
+		if($query->num_rows()>0)
+		{
+			return $query->row_array();
+		}
+		return FALSE;
 	}
 
 	/**

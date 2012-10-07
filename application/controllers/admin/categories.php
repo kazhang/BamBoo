@@ -10,7 +10,7 @@ class Categories extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('category_mdl');
+		$this->load->library('form_validation');
 	}
 
 	/**
@@ -21,11 +21,7 @@ class Categories extends CI_Controller
 	 */
 	public function index()
 	{
-		$this->load->library('form_validation');
-
-		$this->form_validation->set_rules('name','required|trim');
-		$this->form_validation->set_rules('slug','trim');
-		$this->form_validation->set_rules('description','trim');
+		$this->_setRules();
 
 		if($this->form_validation->run() == TRUE)
 		{
@@ -39,6 +35,65 @@ class Categories extends CI_Controller
 		$data['categories']=$this->category_mdl->setLevelCategory($data['categories']);
 
 		$this->load->view('admin/categories',$data);
+	}
+
+	/**
+	 * Edit category 
+	 *
+	 * @access	public
+	 * @param	int		category ID
+	 * @return	void
+	 */
+	public function edit($categoryID)
+	{
+		$this->_setRules();
+
+		if($this->form_validation->run() == TRUE)
+		{
+			$cateData=$this->_getPostData();
+			$this->category_mdl->updateCategory($categoryID,$cateData);
+			redirect('admin/categories');
+		}
+
+		$data['pageTitle']='编辑分类';
+
+		$data['categories']=$this->category_mdl->getCategories();
+		$data['categories']=$this->category_mdl->setLevelCategory($data['categories']);
+		$data['category']=$this->category_mdl->getCategoryByID($categoryID);
+
+		if($data['category']==FALSE)
+		{
+			show_404();
+		}
+
+		$this->load->view('admin/categories',$data);
+	}
+
+	/**
+	 * Delete category 
+	 * 
+	 * @access 	public
+	 * @param	int		category ID
+	 * @return 	void
+	 */
+	public function delete($categoryID)
+	{
+		$this->category_mdl->deleteCategory($categoryID);
+
+		redirect('admin/categories');
+	}
+
+	/**
+	 * Set form validation rules
+	 *
+	 * @access	private
+	 * @return 	void
+	 */
+	private function _setRules()
+	{
+		$this->form_validation->set_rules('name','required|trim');
+		$this->form_validation->set_rules('slug','trim');
+		$this->form_validation->set_rules('description','trim');
 	}
 
 	/**
