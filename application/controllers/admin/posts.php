@@ -10,9 +10,6 @@ class Posts extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('post_mdl');
-		$this->load->model('tag_mdl');
-		$this->load->model('category_mdl');
 	}
 
 	/**

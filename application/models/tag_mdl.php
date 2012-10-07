@@ -80,12 +80,18 @@ class Tag_mdl extends CI_Model
 	 */
 	public function addTag($name,$description = NULL)
 	{
+
+		if($slug === NULL)
+		{
+			$slug=urlencode($name);
+		}
+
 		if($description === NULL)
 		{
 			$description=$name;
 		}
 
-		$this->db->insert(self::TAGS,array('name'=>$name,'description'=>$description));
+		$this->db->insert(self::TAGS,array('name'=>$name,'slug'=>$slug,'description'=>$description));
 
 		return $this->db->insert_id();
 	}
@@ -222,5 +228,5 @@ class Tag_mdl extends CI_Model
 
 }
 /* End of file post_mdl.php */
-/* Location: ./application/models/post_mdl.php */
+/* Location: ./application/models/tag_mdl.php */
 ?>

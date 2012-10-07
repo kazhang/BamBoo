@@ -52,6 +52,26 @@ class Common
 			$res[]=$item[$field];
 		return $res;
 	}
+
+	/**
+	 * Implode metas in result array
+	 *
+	 * @access	public
+	 * @param	array	metas like categories and tags
+	 * @param	string	meta type,categor or tag?
+	 * @return 	string
+	 */
+	static public function implodeMetas($metas,$type)
+	{
+		if(empty($metas))return '';
+
+		$buf=array();
+		foreach($metas as $item)
+		{
+			$buf[]=anchor("$type/".$item['slug'],$item['name'],'title="查看'.$item['name'].'中的全部文章"');
+		}
+		return implode('、',$buf);
+	}
 }
 /* End of file Common.php */
 /* Location: ./application/libraries/Common.php */

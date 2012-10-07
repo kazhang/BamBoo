@@ -25,10 +25,19 @@ class Posts extends MY_Controller
 			redirect(site_url());
 		}
 
-		$post="This is a test";
+		$post=$this->post_mdl->getPostBySlug($slug);
+
+		if($post == FALSE)
+		{
+			show_404();
+		}
+
+		$post['tags']=$this->tag_mdl->getTagsByPostID($post['post_ID']);
+		$post['categories']=$this->category_mdl->getCategoriesByPostID($post['post_ID']);
+
 		$comments=array('This is a comment');
 
-		$data['pageTitle']='page title';
+		$data['pageTitle']=$post['title'];
 		$data['pageDescription']='page description';
 		$data['pageKeywords']='page keywords';
 		$data['parsedFeed']='parsed feed';

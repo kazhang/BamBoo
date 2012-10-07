@@ -58,7 +58,7 @@ class Post_mdl extends CI_Model
 	 */
 	public function getPostBySlug($slug)
 	{
-		$this->db->where('slug',$slut);
+		$this->db->where('slug',$slug);
 		$query = $this->db->get(self::POSTS);
 
 		if($query->num_rows()>0)
