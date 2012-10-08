@@ -54,6 +54,10 @@ class Categories extends CI_Controller
 			$this->category_mdl->updateCategory($categoryID,$cateData);
 			redirect('admin/categories');
 		}
+		else
+		{
+			show_error(validation_errors());
+		}
 
 		$data['pageTitle']='编辑分类';
 
@@ -91,9 +95,9 @@ class Categories extends CI_Controller
 	 */
 	private function _setRules()
 	{
-		$this->form_validation->set_rules('name','required|trim');
-		$this->form_validation->set_rules('slug','trim');
-		$this->form_validation->set_rules('description','trim');
+		$this->form_validation->set_rules('name','名称','required|trim');
+		$this->form_validation->set_rules('slug','别名','trim');
+		$this->form_validation->set_rules('description','描述','trim');
 	}
 
 	/**

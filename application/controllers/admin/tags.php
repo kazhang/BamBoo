@@ -28,6 +28,10 @@ class Tags extends CI_Controller
 			$tagData=$this->_getPostData();
 			$this->tag_mdl->addTag($tagData['name'],$tagData['slug'],$tagData['description']);
 		}
+		else
+		{
+			show_error(validation_errors());
+		}
 
 		$data['pageTitle']='标签';
 		
@@ -87,9 +91,9 @@ class Tags extends CI_Controller
 	 */
 	private function _setRules()
 	{
-		$this->form_validation->set_rules('name','required|trim');
-		$this->form_validation->set_rules('slug','trim');
-		$this->form_validation->set_rules('description','trim');
+		$this->form_validation->set_rules('name','名称','required|trim');
+		$this->form_validation->set_rules('slug','别名','trim');
+		$this->form_validation->set_rules('description','描述','trim');
 	}
 
 	/**

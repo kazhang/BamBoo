@@ -54,10 +54,16 @@ class Post_mdl extends CI_Model
 	 * 
 	 * @access 	public
 	 * @param	string	article's slug
+	 * @param	string	field
 	 * @return	mixed	{array | FALSE}
 	 */
-	public function getPostBySlug($slug)
+	public function getPostBySlug($slug,$field = NULL)
 	{
+		if($field !== NULL)
+		{
+			$this->db->select($field);
+		}
+
 		$this->db->where('slug',$slug);
 		$query = $this->db->get(self::POSTS);
 
@@ -110,6 +116,19 @@ class Post_mdl extends CI_Model
 		$this->db->update(self::POSTS,array('status'=>$status));
 
 		return $this->db->affected_rows()>0;
+	}
+
+	/**
+	 * update number of an aritcle comments
+	 * 
+	 * @access 	public
+	 * @param	int		post ID
+	 * @param	int		delta
+	 * @return	boolean
+	 */
+	public function commentCntPlus($postID,$delta)
+	{
+		$this->db->query("UPDATE ".self::POSTS." SET `comment_cnt`=(`comment_cnt`+$delta) WHERE `post_ID`=$postID");
 	}
 }
 /* End of file post_mdl.php */

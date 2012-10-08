@@ -48,10 +48,10 @@ class Posts extends CI_Controller
 	{
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('title','trim');
-		$this->form_validation->set_rules('slug','trim');
-		$this->form_validation->set_rules('tags','trim');
-		$this->form_validation->set_rules('created','trim');
+		$this->form_validation->set_rules('title','标题','trim');
+		$this->form_validation->set_rules('slug','别名','trim');
+		$this->form_validation->set_rules('tags','标签','trim');
+		$this->form_validation->set_rules('created','创建日期','trim');
 
 		//write new article
 		if($postID === NULL)
