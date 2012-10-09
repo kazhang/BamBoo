@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Posts extends CI_Controller
+class Posts extends MY_Auth_Controller
 {
 	/**
 	 * Constructor

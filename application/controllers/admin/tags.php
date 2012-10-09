@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Tags extends CI_Controller
+class Tags extends MY_Auth_Controller
 {
 	/**
 	 * Constructor
@@ -27,10 +27,6 @@ class Tags extends CI_Controller
 		{
 			$tagData=$this->_getPostData();
 			$this->tag_mdl->addTag($tagData['name'],$tagData['slug'],$tagData['description']);
-		}
-		else
-		{
-			show_error(validation_errors());
 		}
 
 		$data['pageTitle']='标签';

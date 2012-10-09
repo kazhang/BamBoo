@@ -35,6 +35,27 @@ class MY_Controller extends CI_Controller
 	}
 
 }
+
+class MY_Auth_Controller extends CI_Controller
+{
+	/**
+	 * Constructor
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->library('Auth');
+		if($this->auth->hasLogin() === FALSE)
+		{
+			redirect('admin/login?ref='.urlencode($this->uri->uri_string()));
+		}
+
+		$this->load->model('user_mdl');
+	}
+}
 /* End of file MY_Controller.php */
 /* Location: ./application/core/MY_Controller.php */
 ?>

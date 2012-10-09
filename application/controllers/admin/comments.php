@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Comments extends CI_Controller
+class Comments extends MY_Auth_Controller
 {
 	/**
 	 * Constructor
