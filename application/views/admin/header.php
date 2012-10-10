@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title><?=$pageTitle?></title>
+	<title><?=$pageTitle?> | <?=settingItem('blog_title')?></title>
 	<meta charset="utf-8"/>
 </head>
 <body>

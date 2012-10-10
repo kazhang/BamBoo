@@ -93,6 +93,52 @@ class Common
 		return function_exists('mb_get_info') ? mb_strimwidth($str, 0, $maxLength, '', $charset) : substr($str, $maxLength);
 	}
 }
+/**
+ * Get all settings
+ * 
+ * @access	public
+ * @return	array
+ */
+function &getSetting()
+{
+	static $settings;
+	if(!isset($settings))
+	{
+		$CI=&get_instance();
+		$query=$CI->db->get('settings');
+
+		foreach($query->result() as $item)
+		{
+			$settings[$item->name]=$item->value;
+		}
+		$query->free_result();
+	}
+
+	return $settings;
+}
+
+/**
+ * Get a setting item
+ *
+ * @access	public
+ * @param	string	setting name
+ * @return	mixed	
+ */
+function settingItem($name)
+{
+	static $settingItem=array();
+	if(!isset($settingItem[$name]))
+	{
+		$settings=&getSetting();
+		if(!isset($settings[$name]))
+		{
+			return FALSE;
+		}
+		$settingItem[$name]=$settings[$name];
+	}
+	return $settingItem[$name];
+}
+
 /* End of file Common.php */
 /* Location: ./application/libraries/Common.php */
 ?>

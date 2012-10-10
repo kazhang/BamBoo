@@ -12,7 +12,7 @@
 				<td>
 				<?=anchor('admin/posts/write/'.$post['post_ID'],$post['title'])?><?=($post['status']==0 ? ' -草稿':'')?><br />
 					<?=anchor('admin/posts/write/'.$post['post_ID'],'编辑')?> | <?=anchor('admin/posts/trash/'.$post['post_ID'].'/'.$post['status'],'移至回收站')?> | 
-					<?=anchor('posts/'.$post['slug'],'查看')?>
+					<?=anchor('post/'.$post['slug'],'查看')?>
 				</td>
 				<td>BamBoo</td>
 				<td><?=$post['categories']?></td>
