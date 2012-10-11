@@ -18,5 +18,6 @@ $this->load->view('header');
 			</div>
 		</div>
 <?php endforeach;?>
+<?php $this->load->view('sidebar');?>
 	</div><!--end of main-->
 <?php $this->load->view('footer');?>
