@@ -48,9 +48,9 @@ $this->load->view('header');
 			<span class="reply-op"><a href="javascript:;" onclick="return comment.moveRespond('comments',0)">取消回复</a></span>
 			<p class="reply-op"><input type="checkbox" name="cite"/>同时引用原文</p>
 			<p>电子邮件地址不会被公开。必填项已用*标注</p>
-				<div><label for="author">姓名</label><input type="text" name="author"/><span class="red">*</span></div>
-				<div><label for="email">电子邮件</label><input type="text" name="email"/><span class="red">*</span></div>
-				<div><label for="url">站点</label><input type="text" name="url"/></div>
+				<div><label for="author">姓名</label><input type="text" name="author" placeholder="称呼" required /><span class="red">*</span></div>
+				<div><label for="email">电子邮件</label><input type="text" name="email" placeholder="电子邮件" required /><span class="red">*</span></div>
+				<div><label for="url">站点</label><input type="text" name="url" placeholder="网站" /></div>
 				<div><label for="content">评论</label><textarea name="content"></textarea></div>
 				<div><input type="hidden" name="postSlug" value="<?=$post['slug']?>"/><input type="hidden" name="replyTo" value="0" id="replyTo"/></div>
 				<div><input type="submit" value="发表评论"/></div>

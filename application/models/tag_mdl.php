@@ -7,7 +7,7 @@ class Tag_mdl extends CI_Model
 	/**
 	 * map ID to tag name
 	 *
-	 * @acces private
+	 * @access private
 	 */
 	static private $names = NULL;
 

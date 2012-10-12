@@ -50,6 +50,45 @@ class Post_mdl extends CI_Model
 	}
 
 	/**
+	 * Get posts by tag ID
+	 *
+	 * @access	public
+	 * @param	int		tag ID
+	 * @param	int		status
+	 * @return 	array
+	 */
+	public function getPostsByTagID($tag_ID,$status = 1)
+	{
+		$this->db->join('post_tag',self::POSTS.'.post_ID = post_tag.post_ID');
+		$this->db->where('tag_ID',$tag_ID);
+		$this->db->where('status',$status);
+		$query=$this->db->get(self::POSTS);
+
+		if($query->num_rows()>0)
+			return $query->result_array();
+		return array();
+	}
+
+	/**
+	 * Get posts by categories ID
+	 * 
+	 * @access	public
+	 * @param	array	categories ID
+	 * @return	array
+	 */
+	public function getPostsByCategoriesID($CID,$status = 1)
+	{
+		$this->db->join('post_category',self::POSTS.'.post_ID = post_category.post_ID');
+		$this->db->where('status',$status);
+		$this->db->where_in('category_ID',$CID);
+		$query=$this->db->get(self::POSTS);
+
+		if($query->num_rows()>0)
+			return $query->result_array();
+		return array();
+	}
+
+	/**
 	 * Get an article by slug
 	 * 
 	 * @access 	public

@@ -5,17 +5,20 @@ $this->load->view('header');
 <?php foreach($posts as $post):?>
 		<div class="article">
 			<div class="article-title">
-				<?=anchor('post/'.$post['slug'],$post['title'])?>
+				<?=anchor($post['permalink'],$post['title'])?>
 			</div>
 			<div class="article-meta">
-				发布于：<?=date('Y年m月d日',$post['created'])?> 分类目录：<?=Common::implodeMetas($post['categories'],'category')?>
+				发布于：<?=$post['published']?> 分类目录：<?=Common::implodeMetas($post['categories'],'category')?>
 			</div>
 			<div class="article-content">
-				<?=$post['content']?>
+				<?=$post['excerpt']?>
 			</div>
 			<div class="article-tags">
-				内容：<?=Common::implodeMetas($post['tags'],'tag')?>
+				标签：<?=Common::implodeMetas($post['tags'],'tag')?>
 			</div>
+<?php if($post['more']):?>
+			<button>继续阅读</button>
+<?php endif;?>
 		</div>
 <?php endforeach;?>
 <?php $this->load->view('sidebar');?>

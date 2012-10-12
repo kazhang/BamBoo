@@ -58,7 +58,7 @@ class Common
 	 *
 	 * @access	public
 	 * @param	array	metas like categories and tags
-	 * @param	string	meta type,categor or tag?
+	 * @param	string	meta type,category or tag?
 	 * @return 	string
 	 */
 	static public function implodeMetas($metas,$type)
@@ -91,6 +91,20 @@ class Common
 		$str = empty($str) ? $default : $str;
 
 		return function_exists('mb_get_info') ? mb_strimwidth($str, 0, $maxLength, '', $charset) : substr($str, $maxLength);
+	}
+
+	/**
+	 * Get excerpt by separator
+	 *
+	 * @access	public
+	 * @param	string content	
+	 * @return	string	
+	 */
+	static public function getExcerpt($string)
+	{
+		list($excerpt)=explode(B_CONTENT_BREAK,$string);
+		$excerpt=empty($excerpt)?$string:$excerpt;
+		return $excerpt;
 	}
 }
 /**

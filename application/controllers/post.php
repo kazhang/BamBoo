@@ -39,7 +39,7 @@ class Post extends MY_Controller
 		$comments=array('This is a comment');
 
 		$data['pageTitle']=$post['title'];
-		$data['pageDescription']='page description';
+		$data['pageDescription']=Common::getExcerpt($post['content']);
 		$data['pageKeywords']='page keywords';
 		$data['parsedFeed']='parsed feed';
 		$data['post']=$post;

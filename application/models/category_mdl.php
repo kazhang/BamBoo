@@ -94,6 +94,44 @@ class Category_mdl extends CI_Model
 	}
 
 	/**
+	 * Get category by slug
+	 *
+	 * @access	public
+	 * @param	string	slug
+	 * @return	mixed	{array | FALSE}
+	 */
+	public function getCategoryBySlug($slug)
+	{
+		$this->db->where('slug',$slug);
+		$query=$this->db->get(self::CATEGORIES);
+
+		if($query->num_rows()>0)
+		{
+			return $query->row_array();
+		}
+		return FALSE;
+	}
+
+	/**
+	 * Get children categories ID
+	 *
+	 * @access  public
+	 * @param	int 	category ID
+	 * @return 	array
+	 */
+	public function getChild($categoryID)
+	{
+		$res=array();
+		$this->db->select('category_ID');
+		$this->db->where('parent_ID',$categoryID);
+		$query=$this->db->get(self::CATEGORIES);
+
+		foreach($query->result() as $item)
+			$res[]=$item->category_ID;
+		return $res;
+	}
+
+	/**
 	 * Add a new category
 	 *
 	 * @access 	public
@@ -108,7 +146,7 @@ class Category_mdl extends CI_Model
 	}
 
 	/**
-	 * Update a categroy information
+	 * Update a category information
 	 *
 	 * @access	public
 	 * @param	int		category ID

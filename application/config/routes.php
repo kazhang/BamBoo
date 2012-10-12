@@ -40,6 +40,9 @@
 
 $route['default_controller'] = "home";
 $route['post/(:any)']="post/index/$1";
+$route['tag/(:any)']="home/tag/$1";
+$route['category/(:any)']="home/category/$1";
+$route['search']='home/search';
 $route['comment/(:any)']="comment/index/$1";
 $route['404_override'] = '';
 
