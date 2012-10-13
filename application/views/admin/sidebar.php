@@ -1,7 +1,8 @@
 <ul class="nav nav-list">
+	<li <?=($cur == 'home' ? 'class="active"':'')?>><?=anchor('admin/home','<i class="icon-home"></i>管理中心')?></li>
 	<li class="nav-header">文章</li>
 	<li <?=($cur == 'posts' ? 'class="active"':'')?>><?=anchor('admin/posts','<i class="icon-book"></i>所有文章')?></li>
-	<li <?=($cur == 'write' ? 'class="active"':'')?>><?=anchor('admin/write','<i class="icon-edit"></i>写文章')?></li>
+	<li <?=($cur == 'write' ? 'class="active"':'')?>><?=anchor('admin/posts/write','<i class="icon-edit"></i>写文章')?></li>
 	<li <?=($cur == 'categories' ? 'class="active"':'')?>><?=anchor('admin/categories','<i class="icon-folder-open"></i>分类目录')?></li>
 	<li <?=($cur == 'tags' ? 'class="active"':'')?>><?=anchor('admin/tags','<i class="icon-tags"></i>标签')?></li>
 	<li class="nav-header">评论</li>

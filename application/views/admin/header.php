@@ -4,15 +4,16 @@
 	<title><?=$pageTitle?> | <?=settingItem('blog_title')?></title>
 	<link href="<?=base_url('application/views/bootstrap/css/bootstrap.min.css')?>" rel="stylesheet">
 	<link href="<?=base_url('application/views/style.css')?>" rel="stylesheet">
-	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+	<script type="text/javascript" src="<?=base_url('application/views/jquery.min.js')?>"></script>
 	<script src="<?=base_url('application/views/bootstrap/js/bootstrap.min.js')?>" type="text/javascript"></script>
+	<script type="text/javascript" src="<?=base_url('application/views/common.js')?>"></script>
 	<meta charset="utf-8"/>
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container-fluid">
-			<a class="brand" href="#">BamBoo</a>
+			<a class="brand" href="<?=site_url('admin/home')?>">BamBoo</a>
 			<ul class="nav">
 				<li <?=($cur == 'posts' ? 'class="active"':'')?>><?=anchor('#','文章<b class="caret"></b>','class="dropdown-toggle" data-toggle="dropdown"')?>
 					<ul class="dropdown-menu" role="menu">

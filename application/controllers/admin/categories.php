@@ -55,10 +55,6 @@ class Categories extends MY_Auth_Controller
 			$this->category_mdl->updateCategory($categoryID,$cateData);
 			redirect('admin/categories');
 		}
-		else
-		{
-			show_error(validation_errors());
-		}
 
 		$data['pageTitle']='编辑分类';
 		$data['cur']='categories';
