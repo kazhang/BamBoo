@@ -44,6 +44,10 @@ $route['tag/(:any)']="home/tag/$1";
 $route['category/(:any)']="home/category/$1";
 $route['search']='home/search';
 $route['comment/(:any)']="comment/index/$1";
+
+$route['archives/(\d{4})']='home/archives/$1';
+$route['archives/(\d{4})/(\d{2})']='home/archives/$1/$2';
+$route['archives/(\d{4})/(\d{2})/(\d{2})']='home/archives/$1/$2/$3';
 $route['404_override'] = '';
 
 

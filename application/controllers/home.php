@@ -60,6 +60,7 @@ class Home extends MY_Controller
 		$this->_posts=$this->post_mdl->getPostsByTagID($tag['tag_ID']);
 		$this->_preparePosts();
 		$data['pageTitle']='标签：'.$slug;
+		$data['pageDescription']='标签：'.$tag['name'].'下的所有文章';
 		$data['posts']=$this->_posts;
 		$this->loadThemeView('home',$data);
 	}
@@ -109,6 +110,27 @@ class Home extends MY_Controller
 	}
 
 	/**
+	 * Archives page
+	 *
+	 * @access	public
+	 * @param	int		year
+	 * @param	int		month
+	 * @param	int		day	
+	 * @return	void
+	 */
+	public function archives($year,$month = NULL,$day = NULL)
+	{
+		if(empty($year))redirect(site_url());
+
+		$this->_posts=$this->post_mdl->getPostsByDate($year,$month,$day);
+		$this->_preparePosts();
+		$data['pageTitle']=$this->_dateString($year,$month,$day)."文章归档";
+		$data['pageDescription']=$data['pageTitle'];
+		$data['posts']=$this->_posts;
+		$this->loadThemeView('home',$data);
+	}
+
+	/**
 	 * prepare posts information(tags,categories,links)
 	 *
 	 * @access	private
@@ -127,6 +149,29 @@ class Home extends MY_Controller
 			unset($this->_posts[$key]['slug']);
 			unset($this->_posts[$key]['content']);
 		}
+	}
+
+	/**
+	 * Return date string
+	 *
+	 * @access	private
+	 * @param	int		year
+	 * @param	int		month
+	 * @param	int 	day
+	 * @return	string
+	 */
+	private function _dateString($year,$month = NULL,$day = NULL)
+	{
+		$res=$year."年";
+		if($month !== NULL)
+		{
+			$res.=$month."月";
+			if($day !== NULL)
+			{
+				$res.=$day."日";
+			}
+		}
+		return $res;
 	}
 }
 /* End of file home.php */

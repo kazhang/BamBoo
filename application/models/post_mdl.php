@@ -113,6 +113,58 @@ class Post_mdl extends CI_Model
 	}
 
 	/**
+	 * Get posts by date
+	 *
+	 * @access	public
+	 * @param	int		year
+	 * @param	int		month
+	 * @param	int		day
+	 * @return	array
+	 */
+	public function getPostsByDate($year,$month = NULL,$day = NULL)
+	{
+		if(empty($year) && empty($month) && empty($day))exit();
+
+		if(!empty($year))
+		{
+			if(!empty($month))
+			{
+				if(!empty($day))
+				{
+					$from=mktime(0,0,0,$month,$day,$year);
+					$to=mktime(23,59,59,$month,$day,$year);
+				}
+				else
+				{
+					$from=mktime(0,0,0,$month,1,$year);
+					$to=mktime(23,59,59,$month,date('t',$from),$year);
+				}
+			}
+			else
+			{
+				$from=mktime(0,0,0,1,1,$year);
+				$to=mktime(23,59,59,12,31,$year);
+			}
+		}
+		else
+		{
+			$from=0;
+			$to=time();
+		}
+
+		$this->db->where('created >=',$from);
+		$this->db->where('created <=',$to);
+		$this->db->where('status',1);
+
+		$query=$this->db->get(self::POSTS);
+		if($query->num_rows()>0)
+		{
+			return $query->result_array();
+		}
+		return array();
+	}
+
+	/**
 	 * Add a new article
 	 *
 	 * @access 	public

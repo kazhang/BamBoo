@@ -41,7 +41,7 @@ $this->load->view('header');
 			</div>
 <?php endforeach;?>
 		</div>
-
+<?php if($post['allow_comment'] == 1):?>
 		<div id="respond">
 			<h3>发表评论</h3>
 			<form action="<?=site_url('comment/'.$post['post_ID'])?>" method="post">
@@ -56,6 +56,7 @@ $this->load->view('header');
 				<div><input type="submit" value="发表评论"/></div>
 			</form>
 		</div>
+<?php endif;?>
 		
 	</div><!--end of main-->
 <?php $this->load->view('footer');?>

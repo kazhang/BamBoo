@@ -33,11 +33,16 @@ class Comment extends CI_Controller
 		}
 		else
 		{
-			$post=$this->post_mdl->getPostBySlug($this->input->post('postSlug'),'post_ID');
+			$post=$this->post_mdl->getPostBySlug($this->input->post('postSlug'),'post_ID,allow_comment');
 
 			if($post == FALSE)
 			{
 				show_404();
+			}
+			
+			if($post['allow_comment'] == 0)
+			{
+				show_error('文章评论已关闭');
 			}
 
 			$cid=$this->comment_mdl->addComment(array(
