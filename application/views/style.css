@@ -1,0 +1,4 @@
+body{padding-top:50px;background-color:#1B1B1B;}
+.main{background-color:white;padding-left:0px}
+.main .sidebar-bg{width:0.89%;position:absolute;top:0px;bottom:0px;left:14%;box-shadow:3px 0px 5px gray;z-index:0;}
+.footer{color:#999;}

@@ -1,6 +1,4 @@
 <?php $this->load->view('admin/header');?>
-	<div class="main">
-<?php $this->load->view('admin/sidebar');?>
 <?php if(!isset($tag)):?>
 		<h3>标签</h3>
 		<table>
@@ -31,10 +29,9 @@
 		<form action="" method="post">
 			<div><label for="name">标签名</label><input type="text" name="name" value="<?=isset($tag)?$tag['name']:''?>"/></div>
 			<div><label for="slug">别名</label><input type="text" name="slug" value="<?=isset($tag)?$tag['slug']:''?>"/>
-				<dt>在URL中显示的别称，它可以使URL更美观。通常使用小写字母，只能包含字母、数字和连字符(-)。</dt>
+				<span class="help-inline">在URL中显示的别称，它可以使URL更美观。通常使用小写字母，只能包含字母、数字和连字符(-)。</span>
 			</div>
 			<div><label for="description">描述</label><textarea name="description"><?=isset($tag)?$tag['description']:''?></textarea></div>
 			<div><input type="submit" value="<?=isset($tag)?'修改标签':'添加新标签'?>"/></div>
 		</form>
-	</div><!--end of main-->
 <?php $this->load->view('admin/footer');?>

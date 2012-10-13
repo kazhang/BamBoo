@@ -21,6 +21,7 @@ class Users extends MY_Auth_Controller
 	public function index()
 	{
 		$data['pageTitle']='用户';
+		$data['cur']='users';
 		$data['users']=$this->user_mdl->getUsers();
 
 		$this->load->view('admin/users',$data);

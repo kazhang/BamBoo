@@ -1,7 +1,5 @@
 <?php $this->load->view('admin/header');?>
-	<div class="main">
 <?php if(!isset($category)):?>
-<?php $this->load->view('admin/sidebar');?>
 		<h3>分类管理</h3>
 		<table>
 			<tr>
@@ -63,5 +61,4 @@
 			<div><label for="description">描述</label><textarea name="description"><?=isset($category)?$category['description']:''?></textarea></div>
 			<div><input type="submit" value="<?=isset($category)?'修改分类目录':'添加新分类目录'?>"/></div>
 		</form>
-	</div><!--end of main-->
 <?php $this->load->view('admin/footer');?>

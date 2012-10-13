@@ -1,6 +1,4 @@
 <?php $this->load->view('admin/header');?>
-	<div class="main">
-<?php $this->load->view('admin/sidebar');?>
 	<h3>评论</h3>
 	<table>
 		<tr><th>&nbsp;</th><th>作者</th><th>评论</th><th>回应给</th></tr>
@@ -29,5 +27,4 @@ else
 		</tr>
 <?php endforeach;?>
 	</table>
-	</div><!--end of main-->
 <?php $this->load->view('admin/footer');?>

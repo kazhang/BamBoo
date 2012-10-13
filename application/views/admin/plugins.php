@@ -1,6 +1,4 @@
 <?php $this->load->view('admin/header');?>
-	<div class="main">
-<?php $this->load->view('admin/sidebar');?>
 	<h3>插件</h3>
 	<table>
 		<tr><th>&nbsp;</th><th>名称</th><th>描述</th></tr>
@@ -12,5 +10,4 @@
 		</tr>
 <?php endforeach;?>
 	</table>
-	</div><!--end of main-->
 <?php $this->load->view('admin/footer');?>

@@ -30,6 +30,7 @@ class Categories extends MY_Auth_Controller
 		}
 
 		$data['pageTitle']='分类目录';
+		$data['cur']='categories';
 
 		$data['categories']=$this->category_mdl->getCategories();
 		$data['categories']=$this->category_mdl->setLevelCategory($data['categories']);
@@ -60,6 +61,7 @@ class Categories extends MY_Auth_Controller
 		}
 
 		$data['pageTitle']='编辑分类';
+		$data['cur']='categories';
 
 		$data['categories']=$this->category_mdl->getCategories();
 		$data['categories']=$this->category_mdl->setLevelCategory($data['categories']);

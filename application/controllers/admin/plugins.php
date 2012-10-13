@@ -22,6 +22,7 @@ class Plugins extends MY_Auth_Controller
 	public function index()
 	{
 		$data['pageTitle']='插件';
+		$data['cur']='plugins';
 
 		$data['plugins']=$this->plugin_mdl->getAllPluginsInfo();
 

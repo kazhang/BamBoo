@@ -48,6 +48,7 @@ class Settings extends MY_Auth_Controller
 		else
 		{
 			$data['pageTitle']='基本设置';
+			$data['cur']='settings';
 			$data['setting']=$settings;
 			$this->load->view('admin/settings',$data);
 		}

@@ -30,6 +30,7 @@ class Tags extends MY_Auth_Controller
 		}
 
 		$data['pageTitle']='标签';
+		$data['cur']='tags';
 		
 		$data['tags']=$this->tag_mdl->getTags();
 		$this->load->view('admin/tags',$data);
@@ -54,6 +55,7 @@ class Tags extends MY_Auth_Controller
 		}
 
 		$data['pageTitle']='编辑标签';
+		$data['cur']='tags';
 
 		$data['tag']=$this->tag_mdl->getTagByID($tagID);
 

@@ -21,6 +21,7 @@ class Posts extends MY_Auth_Controller
 	public function index()
 	{
 		$data['pageTitle']='文章';
+		$data['cur']='posts';
 
 		$data['posts']=$this->post_mdl->getPosts(0);
 
@@ -59,6 +60,7 @@ class Posts extends MY_Auth_Controller
 			if($this->form_validation->run() == FALSE)
 			{
 				$data['pageTitle']='写文章';
+				$data['cur']='write';
 
 				$data['categories']=$this->category_mdl->getCategories('category_ID,name,parent_ID');
 				$data['categories']=$this->category_mdl->setLevelCategory($data['categories']);
@@ -127,6 +129,7 @@ class Posts extends MY_Auth_Controller
 			$postData['categories']=$oldCategories;
 
 			$data['pageTitle']='编辑文章';
+			$data['cur']='write';
 			$data['post']=$postData;
 
 			if($this->form_validation->run() == FALSE)

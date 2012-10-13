@@ -21,6 +21,7 @@ class Comments extends MY_Auth_Controller
 	public function index()
 	{
 		$data['pageTitle']='评论';
+		$data['cur']='comments';
 		$data['comments']=$this->comment_mdl->getComments(NULL,'ALL','comments.*,posts.slug,posts.title','posts');
 
 		$this->load->view('admin/comments',$data);
