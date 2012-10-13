@@ -72,6 +72,31 @@ class User_mdl extends CI_Model
 		}
 		return $user;
 	}
+
+	/**
+	 * Get author name by author ID
+	 *
+	 * @access	public 
+	 * @param	int		author ID
+	 * @return	string
+	 */
+	public function getAuthorName($authorID)
+	{
+		static $names=array();
+
+		if(isset($names[$authorID]))
+			return $names[$authorID];
+
+		$this->db->select('username');
+		$this->db->where('user_ID',$authorID);
+		$query=$this->db->get(self::USERS);
+		if($query->num_rows()>0)
+		{
+			$user=$query->row();
+			return $names[$authorID]=$user->username;
+		}
+		return '';
+	}
 }
 /* End of file user_mdl.php */
 /* Location: ./application/models/user_mdl.php */

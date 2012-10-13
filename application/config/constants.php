@@ -44,6 +44,9 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 | BamBoo Blog constants
 |
 */
-define('B_CONTENT_BREAK','<!--more-->');
+define('B_CONTENT_BREAK',	'<!--more-->');
+define('RSS1',				'RSS 1.0');
+define('RSS2',				'RSS 2.0');
+define('ATOM',				'ATOM');
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

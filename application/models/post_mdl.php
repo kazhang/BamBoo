@@ -21,11 +21,24 @@ class Post_mdl extends CI_Model
 	 * 
 	 * @access 	public
 	 * @param	int		status
+	 * @param	int		limit
+	 * @param	string 	order by
 	 * @return	array
 	 */
-	public function getPosts($status = 1)
+	public function getPosts($status = 1,$limit = NULL ,$orderBy = NULL)
 	{
+		if($orderBy !== NULL)
+		{
+			$this->db->order_by($orderBy,'desc');
+		}
+
 		$this->db->where('status >=',$status);
+
+		if($limit !== NULL && is_numeric($limit))
+		{
+			$this->db->limit($limit);
+		}
+
 		$query=$this->db->get(self::POSTS);
 
 		return $query->result_array();
