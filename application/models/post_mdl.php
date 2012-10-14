@@ -29,7 +29,7 @@ class Post_mdl extends CI_Model
 	{
 		if($orderBy !== NULL)
 		{
-			$this->db->order_by($orderBy,'desc');
+			$this->db->order_by($orderBy);
 		}
 
 		$this->db->where('status >=',$status);

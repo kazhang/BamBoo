@@ -23,7 +23,7 @@ class Posts extends MY_Auth_Controller
 		$data['pageTitle']='文章';
 		$data['cur']='posts';
 
-		$data['posts']=$this->post_mdl->getPosts(0);
+		$data['posts']=$this->post_mdl->getPosts(0,NULL,'created desc');
 
 		foreach($data['posts'] as $key=>$value)
 		{

@@ -7,4 +7,4 @@ body{padding-top:50px;background-color:#1B1B1B;}
 .main .sidebar-bg{width:0.89%;position:absolute;top:0px;bottom:0px;left:14%;box-shadow:3px 0px 5px gray;z-index:0;}
 .main .table td, .main .table th{vertical-align:middle;text-align:center}
 .main .no-op .op{visibility:hidden;}
-.footer{color:#999;}
+.footer{color:#999;padding-top:20px;text-align:center;}
