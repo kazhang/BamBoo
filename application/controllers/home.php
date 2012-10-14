@@ -34,6 +34,7 @@ class Home extends MY_Controller
 		$this->_preparePosts();
 		$data['pageTitle']='首页';
 		$data['pageDescription']=settingItem('blog_description');
+		$data['pageKeywords']=settingItem('blog_keywords');
 		$data['posts']=$this->_posts;
 		$this->loadThemeView('home',$data);
 	}

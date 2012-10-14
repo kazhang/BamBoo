@@ -7,6 +7,7 @@
 	<script type="text/javascript" src="<?=base_url('application/views/jquery.min.js')?>"></script>
 	<script src="<?=base_url('application/views/bootstrap/js/bootstrap.min.js')?>" type="text/javascript"></script>
 	<script type="text/javascript" src="<?=base_url('application/views/common.js')?>"></script>
+	<link rel="stylesheet" href="<?=base_url('application/third_party/ueditor/themes/default/ueditor.css')?>">
 	<meta charset="utf-8"/>
 </head>
 <body>
@@ -23,6 +24,7 @@
 						<li><?=anchor('admin/posts/tags','标签')?></li>
 					</ul>
 				</li>
+				<li <?=($cur == 'pages' ? 'class="active"':'')?>><?=anchor('admin/pages','页面')?></li>
 				<li <?=($cur == 'comments' ? 'class="active"':'')?>><?=anchor('admin/comments','评论')?></li>
 				<li <?=($cur == 'plugins' ? 'class="active"':'')?>><?=anchor('admin/plugins','插件')?></li>
 				<li <?=($cur == 'users' ? 'class="active"':'')?>><?=anchor('admin/users','用户')?></li>

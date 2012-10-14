@@ -20,7 +20,7 @@
 				<td style="text-align:left">
 				<?=anchor('admin/posts/write/'.$post['post_ID'],$post['title'],'title="编辑"')?><?=($post['status']==0 ? ' -草稿':'')?>
 					<div class="op">
-					<?=anchor('admin/posts/write/'.$post['post_ID'],'编辑')?> | <?=anchor('admin/posts/trash/'.$post['post_ID'].'/'.$post['status'],'移至回收站')?> | 
+					<?=anchor('admin/posts/write/'.$post['post_ID'],'编辑')?> | <?=anchor('admin/posts/dump/'.$post['post_ID'].'/'.$post['status'],'移至回收站')?> | 
 					<?=anchor('post/'.$post['slug'],'查看')?>
 					</div>
 				</td>

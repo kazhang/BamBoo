@@ -61,6 +61,8 @@ class Posts extends MY_Auth_Controller
 			{
 				$data['pageTitle']='写文章';
 				$data['cur']='write';
+				$data['type']='post';
+				$data['msg']=$this->session->flashdata('success');
 
 				$data['categories']=$this->category_mdl->getCategories('category_ID,name,parent_ID');
 				$data['categories']=$this->category_mdl->setLevelCategory($data['categories']);
@@ -69,12 +71,13 @@ class Posts extends MY_Auth_Controller
 			}
 			else
 			{
+				$user=unserialize($this->session->userdata('user'));
 				$isPublished=($this->input->post('publish') === FALSE ? FALSE : TRUE);
 
 				$postData=$this->_getPostData();
 				$postData['created']=time();
 				$postData['modified']=time();
-				$postData['author_ID']=1;
+				$postData['author_ID']=$user['user_ID'];
 				$postData['type']='post';
 				$postData['status']= $isPublished ? 1 : 0;
 				$postData['comment_cnt']=0;
@@ -95,6 +98,11 @@ class Posts extends MY_Auth_Controller
 				if($isPublished)
 				{
 					$this->_updateCount($tags,$categories,1);
+					$this->session->set_flashdata('success','文章发布成功，'.anchor('post/'.$postData['slug'],'点击查看','target="_blank"'));
+				}
+				else
+				{
+					$this->session->set_flashdata('success','文章保存成功，'.anchor('post/'.$postData['slug'],'点击查看','target="_blank"'));
 				}
 
 				redirect('admin/posts/write/'.$postID);
@@ -130,12 +138,14 @@ class Posts extends MY_Auth_Controller
 
 			$data['pageTitle']='编辑文章';
 			$data['cur']='write';
+			$data['type']='post';
 			$data['post']=$postData;
 
 			if($this->form_validation->run() == FALSE)
 			{
 				$data['categories']=$this->category_mdl->getCategories('category_ID,name,parent_ID');
 				$data['categories']=$this->category_mdl->setLevelCategory($data['categories']);
+				$data['msg']=$this->session->flashdata('success');
 
 				$this->load->view('admin/post_write',$data);
 			}
@@ -175,6 +185,11 @@ class Posts extends MY_Auth_Controller
 				if($isPublished)
 				{
 					$this->_updateCount($newTags,$newCategories,1);
+					$this->session->set_flashdata('success','文章发布成功，'.anchor('post/'.$postData['slug'],'点击查看','target="_blank"'));
+				}
+				else
+				{
+					$this->session->set_flashdata('success','文章保存成功，'.anchor('post/'.$postData['slug'],'点击查看','target="_blank"'));
 				}
 
 				redirect('admin/posts/write/'.$postID);
@@ -193,7 +208,7 @@ class Posts extends MY_Auth_Controller
 	 * @param	int		post ID
 	 * @return void
 	 */
-	public function trash($post_ID,$updateCnt = FALSE)
+	public function dump($post_ID,$updateCnt = FALSE)
 	{
 		$this->post_mdl->updateStatus($post_ID,-1);
 

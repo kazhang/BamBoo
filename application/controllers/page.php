@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Post extends MY_Controller
+class Page extends MY_Controller
 {
 	/**
 	 * Constructor
@@ -32,23 +32,16 @@ class Post extends MY_Controller
 			show_404();
 		}
 
-		$post['tags']=$this->tag_mdl->getTagsByPostID($post['post_ID']);
-		$post['categories']=$this->category_mdl->getCategoriesByPostID($post['post_ID']);
 		$post['comments']=$this->comment_mdl->getComments($post['post_ID'],1);
 
 		$data['pageTitle']=$post['title'];
 		$data['pageDescription']=Common::getExcerpt($post['content']);
-		$data['pageKeywords']='page keywords';
-		$data['parsedFeed']='parsed feed';
+		$data['pageKeywords']=$post['title'];
 		$data['post']=$post;
 
 		$data['commentMsg']=$this->session->flashdata('commentMsg');
-		if($data['commentMsg'] == FALSE)
-		{
-			unset($data['commentMsg']);
-		}
 
-		$this->loadThemeView('post',$data);
+		$this->loadThemeView('page',$data);
 	}
 }
 /* End of file post.php */

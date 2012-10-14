@@ -5,6 +5,8 @@
 	<li <?=($cur == 'write' ? 'class="active"':'')?>><?=anchor('admin/posts/write','<i class="icon-edit"></i>写文章')?></li>
 	<li <?=($cur == 'categories' ? 'class="active"':'')?>><?=anchor('admin/categories','<i class="icon-folder-open"></i>分类目录')?></li>
 	<li <?=($cur == 'tags' ? 'class="active"':'')?>><?=anchor('admin/tags','<i class="icon-tags"></i>标签')?></li>
+	<li class="nav-header">页面</li>
+	<li <?=($cur == 'pages' ? 'class="active"':'')?>><?=anchor('admin/pages','<i class="icon-file"></i>页面')?></li>
 	<li class="nav-header">评论</li>
 	<li <?=($cur == 'comments' ? 'class="active"':'')?>><?=anchor('admin/comments','<i class="icon-comment"></i>评论')?></li>
 	<li class="nav-header">插件</li>

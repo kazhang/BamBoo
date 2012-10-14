@@ -32,6 +32,7 @@ class Post_mdl extends CI_Model
 			$this->db->order_by($orderBy);
 		}
 
+		$this->db->where('type','post');
 		$this->db->where('status >=',$status);
 
 		if($limit !== NULL && is_numeric($limit))
@@ -39,6 +40,27 @@ class Post_mdl extends CI_Model
 			$this->db->limit($limit);
 		}
 
+		$query=$this->db->get(self::POSTS);
+
+		return $query->result_array();
+	}
+
+	/**
+	 * Get pages
+	 * 
+	 * @access	public
+	 * @param	int		status
+	 * @param	string	order by
+	 * @return 	array
+	 */
+	public function getPages($status = 1,$orderBy = NULL)
+	{
+		if($orderBy !== NULL)
+		{
+			$this->db->order_by($orderBy);
+		}
+		$this->db->where('type','page');
+		$this->db->where('status >=',$status);
 		$query=$this->db->get(self::POSTS);
 
 		return $query->result_array();
@@ -165,6 +187,7 @@ class Post_mdl extends CI_Model
 			$to=time();
 		}
 
+		$this->db->where('type','post');
 		$this->db->where('created >=',$from);
 		$this->db->where('created <=',$to);
 		$this->db->where('status',1);

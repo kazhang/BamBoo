@@ -2,7 +2,7 @@
 <head>
 	<title><?=$pageTitle?> | <?=settingItem('blog_title')?></title>
 	<meta charset="utf-8">
-	<meta type="Keywords" content="<?=settingItem('blog_keywords')?>">
+	<meta type="Keywords" content="<?=$pageKeywords?>">
 	<meta type="Description" content="<?=$pageDescription?>">
 	<meta type="generator" content="BamBoo blog">
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
