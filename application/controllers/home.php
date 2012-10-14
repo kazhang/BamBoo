@@ -29,7 +29,7 @@ class Home extends MY_Controller
 	 */
 	public function index($page = 1)
 	{
-		$this->_posts=$this->post_mdl->getPosts(1);
+		$this->_posts=$this->post_mdl->getPosts('*',1);
 
 		$this->_preparePosts();
 		$data['pageTitle']='首页';

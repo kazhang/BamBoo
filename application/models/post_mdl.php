@@ -20,13 +20,15 @@ class Post_mdl extends CI_Model
 	 * Get all articles
 	 * 
 	 * @access 	public
+	 * @param	string	filed
 	 * @param	int		status
 	 * @param	int		limit
 	 * @param	string 	order by
 	 * @return	array
 	 */
-	public function getPosts($status = 1,$limit = NULL ,$orderBy = NULL)
+	public function getPosts($field = '*',$status = 1,$limit = NULL ,$orderBy = NULL)
 	{
+		$this->db->select($field);
 		if($orderBy !== NULL)
 		{
 			$this->db->order_by($orderBy);

@@ -35,7 +35,7 @@ class Feed extends CI_Controller
 	 */
 	public function generateFeed()
 	{
-		$posts=$this->post_mdl->getPosts(1,10,'created');
+		$posts=$this->post_mdl->getPosts('*',1,10,'created');
 
 		$this->feedwriter->setTitle(settingItem('blog_title'));
 		$this->feedwriter->setLink(site_url());

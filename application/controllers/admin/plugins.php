@@ -43,6 +43,7 @@ class Plugins extends MY_Auth_Controller
 		{
 			$this->plugin_mdl->active($plugin);
 		}
+		redirect('admin/plugins');
 	}
 }
 /* End of file tags.php */

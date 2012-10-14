@@ -37,9 +37,10 @@ class Comment_mdl extends CI_Model
 	 * @param	string	join post?
 	 * @param	string	order by
 	 * @param	int		page	
+	 * @param	int		limit
 	 * @return	array	
 	 */
-	public function getComments($postID = NULL,$approved = NULL,$field = NULL,$join = NULL,$orderBy = NULL,$page = NULL)
+	public function getComments($postID = NULL,$approved = NULL,$field = NULL,$join = NULL,$orderBy = NULL,$page = NULL,$limit = NULL)
 	{
 		if($field !== NULL)
 		{
@@ -69,6 +70,10 @@ class Comment_mdl extends CI_Model
 		if($page !== NULL)
 		{
 			$this->db->limit(B_PER_PAGE,($page-1)*B_PER_PAGE);
+		}
+		else if($limit !== NULL)
+		{
+			$this->db->limit($limit);
 		}
 
 		$query=$this->db->get(self::COMMENTS);
