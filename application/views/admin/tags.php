@@ -8,7 +8,7 @@
 					<colgroup></colgroup>
 					<colgroup width="80"></colgroup>
 					<colgroup></colgroup>
-					<colgroup width="60" style="text-align:center"></colgroup>
+					<colgroup width="60"></colgroup>
 					<thead>
 					<tr>
 						<th>&nbsp;</th><th>标签名</th><th>别名</th><th>描述</th><th>文章数</th>
@@ -18,7 +18,7 @@
 <?php foreach($tags as $item):?>
 					<tr class="no-op">
 						<td><input type="checkbox" name="choosed[]" value="<?=$item['tag_ID']?>"/></td>
-						<td>
+						<td style="text-align:left">
 							<?=$item['name']?>
 							<div class="op">
 								<?=anchor('admin/tags/edit/'.$item['tag_ID'],'编辑')?> | 
@@ -27,7 +27,7 @@
 							</div>
 						</td>
 						<td><?=$item['slug']?></td>
-						<td><?=$item['description']?></td>
+						<td style="text-align:left"><?=$item['description']?></td>
 						<td><?=$item['count']?></td>
 					</tr>
 <?php endforeach;?>

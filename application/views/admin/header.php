@@ -28,6 +28,7 @@
 				<li <?=($cur == 'users' ? 'class="active"':'')?>><?=anchor('admin/users','用户')?></li>
 				<li <?=($cur == 'settings' ? 'class="active"':'')?>><?=anchor('admin/settings','设置')?></li>
 			</ul>
+				<div class="logout"><?=anchor('admin/login/logout','<i class="icon-white icon-off"></i>退出登录')?></div>
 		</div>
 	</div>
 </div>

@@ -45,6 +45,7 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 |
 */
 define('B_CONTENT_BREAK',	'<!--more-->');
+define('B_PER_PAGE',		10);
 define('RSS1',				'RSS 1.0');
 define('RSS2',				'RSS 2.0');
 define('ATOM',				'ATOM');

@@ -87,7 +87,7 @@ class User_mdl extends CI_Model
 		if(isset($names[$authorID]))
 			return $names[$authorID];
 
-		$this->db->select('username');
+		$this->db->select('nickname');
 		$this->db->where('user_ID',$authorID);
 		$query=$this->db->get(self::USERS);
 		if($query->num_rows()>0)
@@ -96,6 +96,39 @@ class User_mdl extends CI_Model
 			return $names[$authorID]=$user->username;
 		}
 		return '';
+	}
+
+	/**
+	 * Add a user
+	 *
+	 * @access	public
+	 * @param	array
+	 * @return 	int
+	 */
+	public function addUser($userData)
+	{
+		$userData['password']=md5(self::SALT.$userData['password']);
+		$userData['registered']=time();
+
+		$this->db->insert(self::USERS,$userData);
+		return $this->db->insert_id();
+	}
+
+	/**
+	 * Update user profile
+	 *
+	 * @access	public
+	 * @param	int		user ID
+	 * @param	array	user data
+	 * @return 	boolean
+	 */
+	public function updateUser($userID,$userData)
+	{
+		$this->db->where('user_ID',$userID);
+		$userData['password']=md5(self::SALT.$userData['password']);
+		$this->db->update(self::USERS,$userData);
+
+		return $this->db->affected_rows()>0;
 	}
 }
 /* End of file user_mdl.php */

@@ -10,6 +10,7 @@ class Comments extends MY_Auth_Controller
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->library('pagination');
 	}
 
 	/**
@@ -22,7 +23,18 @@ class Comments extends MY_Auth_Controller
 	{
 		$data['pageTitle']='评论';
 		$data['cur']='comments';
-		$data['comments']=$this->comment_mdl->getComments(NULL,'ALL','comments.*,posts.slug,posts.title','posts');
+
+		$data['page']=$this->input->get('page');
+		$data['page']=empty($data['page'])?1:$data['page'];
+
+		$data['comments']=$this->comment_mdl->getComments(NULL,'ALL','comments.*,posts.slug,posts.title','posts','approved asc,created desc',$data['page']);
+
+		$pagConfig['base_url']=site_url('admin/comments/?');
+		$pagConfig['total_rows']=$this->comment_mdl->getNumComment('ALL');
+
+		$this->pagination->initialize($pagConfig);
+
+		$data['pagination']=$this->pagination->create_links();
 
 		$this->load->view('admin/comments',$data);
 	}

@@ -38,10 +38,11 @@ class Login extends CI_Controller
 			{
 				$this->auth->setSession($user);
 				$ref=$this->input->get('ref');
-				redirect($ref ? $ref : 'admin/posts');
+				redirect($ref ? $ref : 'admin/home');
 			}
 		}
 		$data['pageTitle']='用户登录';
+		$data['cur']='login';
 		$this->load->view('admin/login',$data);
 	}
 

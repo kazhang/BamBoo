@@ -35,9 +35,11 @@ class Comment_mdl extends CI_Model
 	 * @param	int		approved
 	 * @param	string	field
 	 * @param	string	join post?
+	 * @param	string	order by
+	 * @param	int		page	
 	 * @return	array	
 	 */
-	public function getComments($postID = NULL,$approved = NULL,$field = NULL,$join = NULL)
+	public function getComments($postID = NULL,$approved = NULL,$field = NULL,$join = NULL,$orderBy = NULL,$page = NULL)
 	{
 		if($field !== NULL)
 		{
@@ -57,6 +59,16 @@ class Comment_mdl extends CI_Model
 		if($join !== NULL)
 		{
 			$this->db->join(self::POSTS,self::POSTS.'.post_ID = '.self::COMMENTS.'.post_ID');
+		}
+
+		if($orderBy !== NULL)
+		{
+			$this->db->order_by($orderBy);
+		}
+
+		if($page !== NULL)
+		{
+			$this->db->limit(B_PER_PAGE,($page-1)*B_PER_PAGE);
 		}
 
 		$query=$this->db->get(self::COMMENTS);
@@ -93,6 +105,23 @@ class Comment_mdl extends CI_Model
 		}
 
 		return FALSE;
+	}
+
+	/**
+	 * Count number of comments
+	 *
+	 * @access	public
+	 * @param	string	approved
+	 * @return	int
+	 */
+	public function getNumComment($approved = 'ALL')
+	{
+		$this->db->from(self::COMMENTS);
+		if($approved !== 'ALL')
+		{
+			$this->db->where('approved',$approved);
+		}
+		return $this->db->count_all_results();
 	}
 }
 /* End of file comment_mdl.php */
