@@ -35,6 +35,7 @@ class Home extends MY_Controller
 		$data['pageTitle']='首页';
 		$data['pageDescription']=settingItem('blog_description');
 		$data['pageKeywords']=settingItem('blog_keywords');
+		$data['curPage']='home';
 		$data['posts']=$this->_posts;
 		$this->loadThemeView('home',$data);
 	}
@@ -62,6 +63,8 @@ class Home extends MY_Controller
 		$this->_preparePosts();
 		$data['pageTitle']='标签：'.$slug;
 		$data['pageDescription']='标签：'.$tag['name'].'下的所有文章';
+		$data['pageKeywords']=settingItem('blog_keywords');
+		$data['curPage']='tag';
 		$data['posts']=$this->_posts;
 		$this->loadThemeView('home',$data);
 	}
@@ -88,6 +91,8 @@ class Home extends MY_Controller
 		$this->_preparePosts();	
 		$data['pageTitle']='分类：'.$slug;
 		$data['pageDescription']='分类：'.$category['name'].'下的所有文章';
+		$data['pageKeywords']=settingItem('blog_keywords');
+		$data['curPage']='category';
 		$data['posts']=$this->_posts;
 		$this->loadThemeView('home',$data);
 	}
@@ -106,6 +111,8 @@ class Home extends MY_Controller
 		$this->_preparePosts();
 		$data['pageTitle']="\"$keywords\"的搜索结果";
 		$data['pageDescription']=settingItem('blog_description');
+		$data['pageKeywords']=settingItem('blog_keywords');
+		$data['curPage']='search';
 		$data['posts']=$this->_posts;
 		$this->loadThemeView('home',$data);
 	}
@@ -127,6 +134,8 @@ class Home extends MY_Controller
 		$this->_preparePosts();
 		$data['pageTitle']=$this->_dateString($year,$month,$day)."文章归档";
 		$data['pageDescription']=$data['pageTitle'];
+		$data['pageKeywords']=settingItem('blog_keywords');
+		$data['curPage']='archives';
 		$data['posts']=$this->_posts;
 		$this->loadThemeView('home',$data);
 	}

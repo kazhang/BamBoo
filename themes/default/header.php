@@ -19,4 +19,9 @@
 	</script>
 </head>
 <body>
+<h1><?=settingItem('blog_title')?></h1>
+<h3><?=settingItem('blog_slogan')?></h3>
+<ul>
+<?php $this->plugin->trigger('Widget::Navigation','<li {class}><a href="{permalink}">{title}</a></li>',$curPage);?>
+</ul>
 <input type="text" name="keyword" id="keyword"/><button id="search-btn">搜索</button>

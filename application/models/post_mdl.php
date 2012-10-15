@@ -51,12 +51,14 @@ class Post_mdl extends CI_Model
 	 * Get pages
 	 * 
 	 * @access	public
+	 * @param	string	field
 	 * @param	int		status
 	 * @param	string	order by
 	 * @return 	array
 	 */
-	public function getPages($status = 1,$orderBy = NULL)
+	public function getPages($field = '*',$status = 1,$orderBy = NULL)
 	{
+		$this->db->select($field);
 		if($orderBy !== NULL)
 		{
 			$this->db->order_by($orderBy);

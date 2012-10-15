@@ -39,6 +39,7 @@ class Post extends MY_Controller
 		$data['pageTitle']=$post['title'];
 		$data['pageDescription']=Common::getExcerpt($post['content']);
 		$data['pageKeywords']='page keywords';
+		$data['curPage']='post';
 		$data['parsedFeed']='parsed feed';
 		$data['post']=$post;
 

@@ -37,6 +37,7 @@ class Page extends MY_Controller
 		$data['pageTitle']=$post['title'];
 		$data['pageDescription']=Common::getExcerpt($post['content']);
 		$data['pageKeywords']=$post['title'];
+		$data['curPage']=$slug;
 		$data['post']=$post;
 
 		$data['commentMsg']=$this->session->flashdata('commentMsg');

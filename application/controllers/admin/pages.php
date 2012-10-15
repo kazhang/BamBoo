@@ -23,7 +23,7 @@ class Pages extends MY_Auth_Controller
 		$data['pageTitle']='页面';
 		$data['cur']='pages';
 
-		$data['pages']=$this->post_mdl->getPages(0,'created desc');
+		$data['pages']=$this->post_mdl->getPages('title,slug,post_ID,author_ID,comment_cnt,status,created',0,'created desc');
 
 		$this->load->view('admin/pages',$data);
 	}

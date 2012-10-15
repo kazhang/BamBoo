@@ -26,10 +26,12 @@ class Tag_mdl extends CI_Model
 	 * Get all tags
 	 * 
 	 * @access	public
+	 * @param	string	field
 	 * @return	array
 	 */
-	public function getTags()
+	public function getTags($field = '*')
 	{
+		$this->db->select($field);
 		$query=$this->db->get(self::TAGS);
 		if($query->num_rows()>0)
 		{

@@ -1,0 +1,75 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/*
+ *	Plugin Name: 文章分类目录Widget
+ *	Plugin URI: http://www.zkgo.info/
+ *	Description: 显示网站所有的分类目录
+ *	Version: 0.1
+ *	Author: ZAKIR 
+ *	Author Email: zakir.exe@gmail.com
+*/
+class Category 
+{
+	private $_CI;
+
+	/**
+	 * Constructor
+	 * 
+	 * @access	public
+	 * @return	void
+	 */
+	public function __construct(&$plugin)
+	{
+		$plugin->register('Widget::Posts::Category',$this,'show');
+		$this->_CI=&get_instance();
+	}
+
+	/**
+	 * Show leveled categories
+	 *
+	 * @access	public
+	 * @param	string	format
+	 * @param	string	subcategory tag
+	 * @return	void
+	 */
+	public function show($format,$subOpenTag = '<ul>',$subCloseTag = '</ul>')
+	{
+		$categories=$this->_CI->category_mdl->getCategories();
+		$categories=$this->_CI->category_mdl->setLevelCategory($categories);
+
+		foreach($categories as $key=>$item)
+		{
+			if($item['parent_ID'] != 0)continue;
+			$permalink=site_url('category/'.$item['slug']);
+			$wildcards=array(
+				'{permalink}',
+				'{title}'
+			);
+			$replaces=array(
+				$permalink,
+				$item['name']
+			);
+			echo str_replace($wildcards,$replaces,$format),"\r\n";
+			if(count($item['children']) > 0)
+			{
+				echo $subOpenTag,"\r\n";
+				foreach($item['children'] as $subItem)
+				{
+					$permalink=site_url('category/'.$categories[$subItem]['slug']);
+					$wildcards=array(
+						'{permalink}',
+						'{title}'
+					);
+					$replaces=array(
+						$permalink,
+						$categories[$subItem]['name']
+					);
+					echo str_replace($wildcards,$replaces,$format),"\r\n";
+				}
+				echo $subCloseTag,"\r\n";
+			}
+		}
+	}
+}
+/* End of file Categories.php */
+/* Location: ./plugins/categories/Categories.php */
+?>
