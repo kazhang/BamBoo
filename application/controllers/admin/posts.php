@@ -22,9 +22,11 @@ class Posts extends MY_Auth_Controller
 	{
 		$data['pageTitle']='文章';
 		$data['cur']='posts';
+		$data['mode']='normal';
 
 		$data['posts']=$this->post_mdl->getPosts('post_ID,title,slug,created,author_ID,status,comment_cnt',0,NULL,'created desc');
 
+		$this->load->model('user_mdl');
 		foreach($data['posts'] as $key=>$value)
 		{
 			$tags=$this->tag_mdl->getTagsByPostID($value['post_ID'],'name');
@@ -34,6 +36,8 @@ class Posts extends MY_Auth_Controller
 			$categories=$this->category_mdl->getCategoriesByPostID($value['post_ID'],'name');
 			$categories=Common::getField('name',$categories);
 			$data['posts'][$key]['categories']=implode(',',$categories);
+			
+			$data['posts'][$key]['authorName']=$this->user_mdl->getAuthorName($value['author_ID']);
 		}
 
 		$this->load->view('admin/posts',$data);
@@ -227,6 +231,38 @@ class Posts extends MY_Auth_Controller
 			}
 		}
 		redirect('admin/posts');
+	}
+
+	/**
+	 * Show all the trashes in recycle bin
+	 *
+	 * @access	public
+	 * @return 	void
+	 */
+	public function Recycle()
+	{
+		$trashes=$this->post_mdl->getPosts('post_ID,title,slug,created,author_ID,status,comment_cnt',-1,NULL,'created desc');
+
+		$this->load->model('user_mdl');
+		foreach($trashes as $key=>$value)
+		{
+			$tags=$this->tag_mdl->getTagsByPostID($value['post_ID'],'name');
+			$tags=Common::getField('name',$tags);
+			$trashes[$key]['tags']=implode(',',$tags);
+
+			$categories=$this->category_mdl->getCategoriesByPostID($value['post_ID'],'name');
+			$categories=Common::getField('name',$categories);
+			$trashes[$key]['categories']=implode(',',$categories);
+
+			$trashes[$key]['authorName']=$this->user_mdl->getAuthorName($value['author_ID']);
+		}
+
+		$data['posts']=$trashes;
+		$data['cur']='posts';
+		$data['mode']='recycle';
+		$data['pageTitle']='文章：回收站';
+		$this->load->view('admin/posts',$data);
+
 	}
 
 	/**

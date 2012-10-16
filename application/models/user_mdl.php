@@ -93,7 +93,7 @@ class User_mdl extends CI_Model
 		if($query->num_rows()>0)
 		{
 			$user=$query->row();
-			return $names[$authorID]=$user->username;
+			return $names[$authorID]=$user->nickname;
 		}
 		return '';
 	}

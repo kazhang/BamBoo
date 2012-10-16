@@ -35,7 +35,10 @@ class Post_mdl extends CI_Model
 		}
 
 		$this->db->where('type','post');
-		$this->db->where('status >=',$status);
+		if($status == -1)
+			$this->db->where('status',-1);
+		else
+			$this->db->where('status >=',$status);
 
 		if($limit !== NULL && is_numeric($limit))
 		{
