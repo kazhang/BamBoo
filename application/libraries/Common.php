@@ -106,6 +106,29 @@ class Common
 		$excerpt=empty($excerpt)?$string:$excerpt;
 		return $excerpt;
 	}
+
+	/**
+	 * Get avatar
+	 *
+	 * @access	public
+	 * @param	string	email
+	 * @param	int		size
+	 * @param	string	default image
+	 * @param	string	maximum rating
+	 * @param	boolean	generate image address?
+	 * @return	string
+	 */
+	static public function getGravatar($email,$size = 60,$d = 'mm',$r = 'g',$img = TRUE)
+	{
+		$url='http://www.gravatar.com/avatar/';
+		$url.=md5(strtolower(trim($email)));
+		$url.="?s=$size&d=$d&r=$r";
+		if($img)
+		{
+			$url='<img src="'.$url.'"/>';
+		}
+		return $url;
+	}
 }
 /**
  * Get all settings

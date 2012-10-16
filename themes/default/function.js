@@ -2,7 +2,7 @@ var comment={
 	moveRespond:function(dstID,type){
 		if(type == 1)
 		{
-			$('#comment-'+dstID).append($('#respond'));
+			$('#comment-'+dstID+' > .comment-wrap').append($('#respond'));
 			$('#replyTo').val(dstID);
 			$('.reply-op').show();
 		}
@@ -16,3 +16,13 @@ var comment={
 	},
 };		
 
+$(document).ready(function(){
+	$('#keyword').focus(function(){
+		$(this).removeClass('span1');
+		$(this).addClass('span2');
+	});
+	$('#keyword').blur(function(){
+		$(this).removeClass('span2');
+		$(this).addClass('span1');
+	});
+});

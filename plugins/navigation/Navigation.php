@@ -40,7 +40,7 @@ class Navigation
 		);
 		$replaces=array(
 			site_url(),
-			$curPage=='home'?'calss="active"':'',
+			$curPage=='home'?'class="active"':'',
 			'首页'
 		);
 		echo str_replace($wildcards,$replaces,$format);

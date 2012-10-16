@@ -1,1 +1,15 @@
+.article{padding:10px 0px;border-bottom:1px dashed #DDD;position:relative;}
+.article .time{text-align:center;box-shadow:inset 1px 1px 5px gray;color:white;background-color:#70CFFF;font-size:12px;height:60px;width:60px;}
+.article .time .day{font:28px/36px Georgia}
+.article .article-title{font-size:24px;line-height:24px;border-bottom:1px solid #08C;margin-top:16px;}
+.article .article-content{padding:10px;}
+.post .post-title{text-align:center;font-size:28px;font-weight:bold;margin:16px 0px;}
+.post .meta-date{font-family:Georgia,serif;font-size:16px;text-align:center;color:#999}
+.post .content{padding:10px 0px}
+.comment{padding:10px 0px;border-bottom:1px dashed #DDD;}
+.comment .comment-meta{background-color:#F5F4F6;}
+.comment .comment-content{padding-left:10px;}
+.comments{margin-bottom:10px;}
+#respond{width:390px;padding:10px;border:1px solid #DDD;border-radius:5px;}
 .reply-op{display:none;}
+.btn-more{position:absolute;bottom:10px;right:10px;}
