@@ -60,7 +60,7 @@ class Feed extends CI_Controller
 			foreach($posts as $post)
 			{
 				$permalink=site_url('post/'.$post['slug']);
-				$description=Common::getExcerpt($post['slug']);
+				$description=Common::getExcerpt($post['content']);
 				$author=$this->user_mdl->getAuthorName($post['author_ID']);
 
 				$newItem=$this->feedwriter->createNewItem();

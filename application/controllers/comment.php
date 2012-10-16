@@ -63,7 +63,6 @@ class Comment extends CI_Controller
 			if($cid !== FALSE)
 			{
 				$this->session->set_flashdata('commentMsg','评论发布成功，正在等待审核。');	
-				$this->post_mdl->commentCntPlus($postID,1);
 			}
 			else
 			{

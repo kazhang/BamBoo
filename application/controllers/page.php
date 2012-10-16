@@ -35,7 +35,7 @@ class Page extends MY_Controller
 		$post['comments']=$this->comment_mdl->getComments($post['post_ID'],1);
 
 		$data['pageTitle']=$post['title'];
-		$data['pageDescription']=Common::getExcerpt($post['content']);
+		$data['pageDescription']=mb_strimwidth(strip_tags(Common::getExcerpt($post['content'])),0,100,'...');
 		$data['pageKeywords']=$post['title'];
 		$data['curPage']=$slug;
 		$data['post']=$post;

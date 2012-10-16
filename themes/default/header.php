@@ -19,7 +19,7 @@
 		<div class="navbar">
 			<div class="navbar-inner">
 				<ul class="nav">
-					<?php $this->plugin->trigger('Widget::Navigation','<li {class}><a href="{permalink}">{title}</a></li>',$curPage);?>
+					<?php $this->plugin->trigger('Widget::Navigation','<li {class}><a href="{permalink}">{title}</a></li><li class="divider-vertical"></li>',$curPage);?>
 				</ul>
 				<form class="form-search navbar-search pull-right" action="<?=site_url('search/')?>" method="get">
 					<div class="input-append">
