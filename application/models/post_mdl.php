@@ -120,9 +120,11 @@ class Post_mdl extends CI_Model
 	 */
 	public function getPostsByCategoriesID($CID,$status = 1)
 	{
+		$this->db->select('`posts.post_ID`,`slug`,`title`,`created`,`content`,`author_ID`,`comment_cnt`');
 		$this->db->join('post_category',self::POSTS.'.post_ID = post_category.post_ID');
 		$this->db->where('status',$status);
 		$this->db->where_in('category_ID',$CID);
+		$this->db->distinct(self::POSTS.'post_ID');
 		$query=$this->db->get(self::POSTS);
 
 		if($query->num_rows()>0)
