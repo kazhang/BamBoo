@@ -24,7 +24,7 @@ class Posts extends MY_Auth_Controller
 		$data['cur']='posts';
 		$data['mode']='normal';
 
-		$data['posts']=$this->post_mdl->getPosts('post_ID,title,slug,created,author_ID,status,comment_cnt',0,NULL,'created desc');
+		$data['posts']=$this->post_mdl->getPosts('post_ID,title,slug,created,author_ID,status,comment_cnt',0,'created desc');
 
 		$this->load->model('user_mdl');
 		foreach($data['posts'] as $key=>$value)
@@ -241,7 +241,7 @@ class Posts extends MY_Auth_Controller
 	 */
 	public function Recycle()
 	{
-		$trashes=$this->post_mdl->getPosts('post_ID,title,slug,created,author_ID,status,comment_cnt',-1,NULL,'created desc');
+		$trashes=$this->post_mdl->getPosts('post_ID,title,slug,created,author_ID,status,comment_cnt',-1,'created desc');
 
 		$this->load->model('user_mdl');
 		foreach($trashes as $key=>$value)

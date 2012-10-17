@@ -18,18 +18,21 @@ class Home extends MY_Controller
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->library('pagination');
 	}
 
 	/**
 	 * Default page
 	 *
 	 * @access 	public
-	 * @param	int		page number
 	 * @return 	void
 	 */
-	public function index($page = 1)
+	public function index()
 	{
-		$this->_posts=$this->post_mdl->getPosts('*',1);
+		$page=$this->input->get('page');
+		if(!is_numeric($page)||$page<1)
+			$page=1;
+		$this->_posts=$this->post_mdl->getPosts('*',1,'created desc',10,$page);
 
 		$this->_preparePosts();
 		$data['pageTitle']='首页';
@@ -37,6 +40,12 @@ class Home extends MY_Controller
 		$data['pageKeywords']=settingItem('blog_keywords');
 		$data['curPage']='home';
 		$data['posts']=$this->_posts;
+
+		$pagConfig['base_url']=site_url().'?';
+		$pagConfig['total_rows']=$this->post_mdl->getNumPost(1);
+		$this->pagination->initialize($pagConfig);
+		$data['pagination']=$this->pagination->create_links();
+
 		$this->loadThemeView('home',$data);
 	}
 
@@ -52,6 +61,10 @@ class Home extends MY_Controller
 		if(empty($slug))
 			redirect(site_url());
 
+		$page=$this->input->get('page');
+		if(!is_numeric($page)||$page<1)
+			$page=1;
+
 		$tag=$this->tag_mdl->getTagBySlug($slug);
 		if($tag === FALSE)
 		{
@@ -59,13 +72,21 @@ class Home extends MY_Controller
 			exit();
 		}
 
-		$this->_posts=$this->post_mdl->getPostsByTagID($tag['tag_ID']);
+		$total=0;
+		$this->_posts=$this->post_mdl->getPostsByTagID($tag['tag_ID'],1,$page,$total);
 		$this->_preparePosts();
-		$data['pageTitle']='标签：'.$slug;
+		$data['pageTitle']='标签：'.$tag['name'];
+		$data['curTitle']='标签归档：'.$tag['name'];
 		$data['pageDescription']='标签：'.$tag['name'].'下的所有文章';
 		$data['pageKeywords']=settingItem('blog_keywords');
 		$data['curPage']='tag';
 		$data['posts']=$this->_posts;
+
+		$pagConfig['base_url']=site_url()."/tag/$slug/".'?';
+		$pagConfig['total_rows']=$total;
+		$this->pagination->initialize($pagConfig);
+		$data['pagination']=$this->pagination->create_links();
+
 		$this->loadThemeView('home',$data);
 	}
 
@@ -80,20 +101,33 @@ class Home extends MY_Controller
 	{
 		if(empty($slug))
 			redirect(site_url());
+
+		$page=$this->input->get('page');
+		if(!is_numeric($page)||$page<1)
+			$page=1;
+
 		$category=$this->category_mdl->getCategoryBySlug($slug);
 		$categoryID=array($category['category_ID']);
-		if($category['parent_ID']!=0)
+		if($category['parent_ID']==0)
 		{
 			$categoryID=array_merge($categoryID,$this->category_mdl->getChild($category['category_ID']));	
 		}
 		
-		$this->_posts=$this->post_mdl->getPostsByCategoriesID($categoryID);
+		$total=0;
+		$this->_posts=$this->post_mdl->getPostsByCategoriesID($categoryID,1,$page,$total);
 		$this->_preparePosts();	
-		$data['pageTitle']='分类：'.$slug;
+		$data['pageTitle']='分类：'.$category['name'];
+		$data['curTitle']='分类目录归档：'.$category['name'];
 		$data['pageDescription']='分类：'.$category['name'].'下的所有文章';
 		$data['pageKeywords']=settingItem('blog_keywords');
 		$data['curPage']='category';
 		$data['posts']=$this->_posts;
+
+		$pagConfig['base_url']=site_url()."/category/$slug/".'?';
+		$pagConfig['total_rows']=$total;
+		$this->pagination->initialize($pagConfig);
+		$data['pagination']=$this->pagination->create_links();
+
 		$this->loadThemeView('home',$data);
 	}
 
@@ -107,9 +141,10 @@ class Home extends MY_Controller
 	{
 		$keywords=strip_tags($this->input->get('q'));
 
-		$this->_posts=$this->db->where('status',1)->like('title',$keywords)->get('posts')->result_array();
+		$this->_posts=$this->db->where('status',1)->like('title',$keywords)->order_by('created','desc')->get('posts')->result_array();
 		$this->_preparePosts();
 		$data['pageTitle']="\"$keywords\"的搜索结果";
+		$data['curTitle']="关键词\"$keywords\"的搜索结果：";
 		$data['pageDescription']=settingItem('blog_description');
 		$data['pageKeywords']=settingItem('blog_keywords');
 		$data['curPage']='search';
@@ -130,13 +165,29 @@ class Home extends MY_Controller
 	{
 		if(empty($year))redirect(site_url());
 
-		$this->_posts=$this->post_mdl->getPostsByDate($year,$month,$day);
+		$page=$this->input->get('page');
+		if(!is_numeric($page)||$page<1)
+			$page=1;
+
+		$this->_posts=$this->post_mdl->getPostsByDate($year,$month,$day,$page,$total);
 		$this->_preparePosts();
 		$data['pageTitle']=$this->_dateString($year,$month,$day)."文章归档";
+		$data['curTitle']=$data['pageTitle']."：";
 		$data['pageDescription']=$data['pageTitle'];
 		$data['pageKeywords']=settingItem('blog_keywords');
 		$data['curPage']='archives';
 		$data['posts']=$this->_posts;
+
+		$base_url=site_url()."/archives/$year/";
+		if($month !== NULL)
+			$base_url.=$month.'/';
+		if($day !== NULL)
+			$base_url.=$day.'/';
+		$pagConfig['base_url']=$base_url.'?';
+		$pagConfig['total_rows']=$total;
+		$this->pagination->initialize($pagConfig);
+		$data['pagination']=$this->pagination->create_links();
+
 		$this->loadThemeView('home',$data);
 	}
 

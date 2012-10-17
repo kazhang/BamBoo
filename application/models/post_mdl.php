@@ -22,11 +22,12 @@ class Post_mdl extends CI_Model
 	 * @access 	public
 	 * @param	string	filed
 	 * @param	int		status
-	 * @param	int		limit
 	 * @param	string 	order by
+	 * @param	int		limit
+	 * @param	int		page	
 	 * @return	array
 	 */
-	public function getPosts($field = '*',$status = 1,$limit = NULL ,$orderBy = NULL)
+	public function getPosts($field = '*',$status = 1,$orderBy = NULL,$limit = NULL ,$page = NULL)
 	{
 		$this->db->select($field);
 		if($orderBy !== NULL)
@@ -40,7 +41,11 @@ class Post_mdl extends CI_Model
 		else
 			$this->db->where('status >=',$status);
 
-		if($limit !== NULL && is_numeric($limit))
+		if($page !== NULL)
+		{
+			$this->db->limit(B_PER_PAGE,($page-1)*B_PER_PAGE);
+		}
+		else if($limit !== NULL && is_numeric($limit))
 		{
 			$this->db->limit($limit);
 		}
@@ -97,13 +102,25 @@ class Post_mdl extends CI_Model
 	 * @access	public
 	 * @param	int		tag ID
 	 * @param	int		status
+	 * @param	int		page
+ 	 * @param	int		total count	 
 	 * @return 	array
 	 */
-	public function getPostsByTagID($tag_ID,$status = 1)
+	public function getPostsByTagID($tag_ID,$status = 1,$page = 1,&$total = 0)
 	{
+		//TODO seperate two queries
+		$this->db->from(self::POSTS);
 		$this->db->join('post_tag',self::POSTS.'.post_ID = post_tag.post_ID');
 		$this->db->where('tag_ID',$tag_ID);
 		$this->db->where('status',$status);
+		$this->db->order_by('created','desc');
+		$total=$this->db->count_all_results();
+
+		$this->db->join('post_tag',self::POSTS.'.post_ID = post_tag.post_ID');
+		$this->db->where('tag_ID',$tag_ID);
+		$this->db->where('status',$status);
+		$this->db->order_by('created','desc');
+		$this->db->limit(B_PER_PAGE,($page-1)*B_PER_PAGE);
 		$query=$this->db->get(self::POSTS);
 
 		if($query->num_rows()>0)
@@ -116,15 +133,27 @@ class Post_mdl extends CI_Model
 	 * 
 	 * @access	public
 	 * @param	array	categories ID
+	 * @param	int		$page
+	 * @param	int		total count
 	 * @return	array
 	 */
-	public function getPostsByCategoriesID($CID,$status = 1)
+	public function getPostsByCategoriesID($CID,$status = 1,$page = 1,&$total = 0)
 	{
+		$this->db->from(self::POSTS);
+		$this->db->join('post_category',self::POSTS.'.post_ID = post_category.post_ID');
+		$this->db->where('status',$status);
+		$this->db->where_in('category_ID',$CID);
+		$this->db->distinct(self::POSTS.'post_ID');
+		$this->db->order_by('created','desc');
+		$total=$this->db->count_all_results();
+
 		$this->db->select('`posts.post_ID`,`slug`,`title`,`created`,`content`,`author_ID`,`comment_cnt`');
 		$this->db->join('post_category',self::POSTS.'.post_ID = post_category.post_ID');
 		$this->db->where('status',$status);
 		$this->db->where_in('category_ID',$CID);
 		$this->db->distinct(self::POSTS.'post_ID');
+		$this->db->order_by('created','desc');
+		$this->db->limit(B_PER_PAGE,($page-1)*B_PER_PAGE);
 		$query=$this->db->get(self::POSTS);
 
 		if($query->num_rows()>0)
@@ -163,9 +192,11 @@ class Post_mdl extends CI_Model
 	 * @param	int		year
 	 * @param	int		month
 	 * @param	int		day
+	 * @param	int		page	
+	 * @param	int		total count
 	 * @return	array
 	 */
-	public function getPostsByDate($year,$month = NULL,$day = NULL)
+	public function getPostsByDate($year,$month = NULL,$day = NULL,$page = NULL,&$total = 0)
 	{
 		if(empty($year) && empty($month) && empty($day))exit();
 
@@ -196,12 +227,25 @@ class Post_mdl extends CI_Model
 			$to=time();
 		}
 
+		$this->db->from(self::POSTS);
 		$this->db->where('type','post');
 		$this->db->where('created >=',$from);
 		$this->db->where('created <=',$to);
 		$this->db->where('status',1);
 
-		$query=$this->db->get(self::POSTS);
+		$total=$this->db->count_all_results();
+
+		$this->db->from(self::POSTS);
+		$this->db->where('type','post');
+		$this->db->where('created >=',$from);
+		$this->db->where('created <=',$to);
+		$this->db->where('status',1);
+		$this->db->order_by('created','desc');
+		if($page !== NULL)
+		{
+			$this->db->limit(B_PER_PAGE,($page-1)*B_PER_PAGE);
+		}
+		$query=$this->db->get();
 		if($query->num_rows()>0)
 		{
 			return $query->result_array();
@@ -265,6 +309,35 @@ class Post_mdl extends CI_Model
 	public function commentCntPlus($postID,$delta)
 	{
 		$this->db->query("UPDATE ".self::POSTS." SET `comment_cnt`=(`comment_cnt`+$delta) WHERE `post_ID`=$postID");
+	}
+
+	/**
+	 * count number of posts
+	 *
+	 * @access	public
+	 * @param	string	status
+	 * @return	int		
+	 */
+	public function getNumPost($status = NULL)
+	{
+		$this->db->from(self::POSTS);
+		if($status !== NULL)
+		{
+			if($status === 'normal')
+			{
+				$this->db->where('status >=',0);
+			}
+			else if($status === 'published')
+			{
+				$this->db->where('status',1);
+			}
+			else if($status === 'trash')
+			{
+				$this->db->where('status',-1);
+			}
+		}
+
+		return $this->db->count_all_results();
 	}
 }
 /* End of file post_mdl.php */

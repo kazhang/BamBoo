@@ -1,6 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 $this->load->view('header');
 ?>
+<?php if(isset($curTitle)):?>
+	<h1 class="cur-title"><?=$curTitle?></h1>
+<?php endif;?>
 <?php foreach($posts as $post):?>
 		<div class="article">
 			<div class="row">
@@ -28,4 +31,7 @@ $this->load->view('header');
 <?php endif;?>
 		</div>
 <?php endforeach;?>
+<?php if(isset($pagination) && !empty($pagination)):?>
+	<div class="pagination"><?=$pagination?></div>
+<?php endif;?>
 <?php $this->load->view('footer');?>

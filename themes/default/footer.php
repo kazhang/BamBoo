@@ -9,7 +9,11 @@
 	<p>&copy; 2012 ZAKIR</p>
 	<p>Run in {elapsed_time} seconds, used {memory_usage} memory.</p>
 	</div>
-	<script src="<?=base_url('application/views/bootstrap/js/bootstrap.min.js')?>" type="text/javascript"></script>
 </div><!--end of container-->
+<script src="<?=base_url('application/views/bootstrap/js/bootstrap.min.js')?>" type="text/javascript"></script>
+<script src="<?=base_url('application/third_party/ueditor/third-party/SyntaxHighlighter/shCore.js')?>" type="text/javascript"></script>
+<script type="text/javascript">
+     SyntaxHighlighter.all()
+ </script>
 </body>
 </html>

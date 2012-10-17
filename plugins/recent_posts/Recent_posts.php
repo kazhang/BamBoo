@@ -34,7 +34,7 @@ class Recent_posts
 	{
 		if(empty($format))return;
 
-		$posts=$this->_CI->post_mdl->getPosts('title,slug',1,5,'created desc');
+		$posts=$this->_CI->post_mdl->getPosts('title,slug',1,'created desc',5);
 		foreach($posts as $post)	
 		{
 			$permalink=site_url('post/'.$post['slug']);

@@ -7,9 +7,10 @@
 	<meta type="Description" content="<?=$pageDescription?>">
 	<meta type="generator" content="BamBoo blog">
 	<link href="<?=base_url('application/views/bootstrap/css/bootstrap.min.css')?>" rel="stylesheet">
+	<link href="<?=base_url('application/third_party/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css')?>" rel="stylesheet">
+	<link href="<?=base_url('themes/default/style.css')?>" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript" src="<?=base_url('themes/default/function.js')?>"></script>
-	<link rel="stylesheet" type="text/css" href="<?=base_url('themes/default/style.css')?>">
 </head>
 <body>
 <div class="container">
