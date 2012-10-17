@@ -48,13 +48,25 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'root';
-$db['default']['password'] = 'root';
-$db['default']['database'] = 'bamboo';
+if(!defined('SAE_TMP_PATH'))
+{
+	$db['default']['hostname'] = 'localhost';
+	$db['default']['username'] = 'root';
+	$db['default']['password'] = 'root';
+	$db['default']['database'] = 'bamboo';
+	$db['default']['pconnect'] = TRUE;
+}
+else
+{
+	$db['default']['hostname'] = SAE_MYSQL_HOST_M;
+	$db['default']['username'] = SAE_MYSQL_USER;
+	$db['default']['password'] = SAE_MYSQL_PASS;
+	$db['default']['database'] = SAE_MYSQL_DB;
+	$db['default']['port'] = SAE_MYSQL_PORT;
+	$db['default']['pconnect'] = FALSE;
+}
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
-$db['default']['pconnect'] = TRUE;
 $db['default']['db_debug'] = TRUE;
 $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = '';

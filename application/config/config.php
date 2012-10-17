@@ -14,7 +14,10 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://127.0.0.1/bamboo/';
+if(!defined('SAE_TMP_PATH'))
+	$config['base_url']	= 'http://127.0.0.1/bamboo/';
+else
+	$config['base_url']	= 'http://bambooblog.sinaapp.com/bamboo/';
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +29,10 @@ $config['base_url']	= 'http://127.0.0.1/bamboo/';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+if(!defined('SAE_TMP_PATH'))
+	$config['index_page'] = 'index.php';
+else
+	$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
