@@ -1,8 +1,7 @@
-<?php if(isset($commentMsg)):?>
-		<div class="msg"><?=$commentMsg?></div>
-<?php endif;?>
-
 		<div class="comments" id="comments">
+<?php if(isset($commentMsg)):?>
+			<div class="alert alert-success"><?=$commentMsg?></div>
+<?php endif;?>
 			<h4><?=$post['comment_cnt']?> 条评论</h4>
 <?php foreach($post['comments'] as $item):?>
 			<div class="comment row" id="comment-<?=$item['comment_ID']?>">
@@ -28,13 +27,13 @@
 			<label class="reply-op"><input type="checkbox" name="cite"/>同时引用原文</label>
 			<p>电子邮件地址不会被公开。</p>
 				<div class="input-prepend">
-					<span class="add-on">@</span><input type="text" name="author" placeholder="称呼（必填）" required />
+				<span class="add-on">@</span><input type="text" name="author" placeholder="称呼（必填）" required value="<?=$cmtAuthor?$cmtAuthor:''?>"/>
 				</div>
 				<div class="input-prepend">
-					<span class="add-on"><i class="icon-envelope"></i></span><input type="email" name="email" placeholder="电子邮件（必填）" required />
+					<span class="add-on"><i class="icon-envelope"></i></span><input type="email" name="email" placeholder="电子邮件（必填）" required  value="<?=$cmtAuthorEmail?$cmtAuthorEmail:''?>"/>
 				</div>
 				<div class="input-prepend">
-					<span class="add-on"><i class="icon-home"></i></span><input type="url" name="url" placeholder="您的网站" />
+					<span class="add-on"><i class="icon-home"></i></span><input type="url" name="url" placeholder="您的网站"  value="<?=$cmtAuthorUrl?$cmtAuthorUrl:''?>"/>
 				</div>
 				<textarea name="content" placeholder="您的评论..." class="span5" rows="5"></textarea>
 				<input type="hidden" name="postSlug" value="<?=$post['slug']?>"/><input type="hidden" name="replyTo" value="0" id="replyTo"/>

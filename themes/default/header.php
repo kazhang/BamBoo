@@ -15,8 +15,8 @@
 <body>
 <div class="container">
 	<div class="header">
-		<h1><?=settingItem('blog_title')?></h1>
-		<h5><?=settingItem('blog_slogan')?></h5>
+		<h1 class="site-title"><a href="<?=site_url()?>" rel="home"><?=settingItem('blog_title')?></a></h1>
+		<h5 class="site-description"><?=settingItem('blog_slogan')?></h5>
 		<div class="navbar">
 			<div class="navbar-inner">
 				<ul class="nav">
