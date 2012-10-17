@@ -14,13 +14,24 @@ class Comment_mdl extends CI_Model
 	 */
 	public function addComment($data,$isCite = FALSE)
 	{
-		if($isCite && $data['parent_ID'] != 0)
+		if($data['parent_ID'] != 0)
 		{
 			$cite=$this->getCommentByID($data['parent_ID']);
-			if($cite)
+
+			
+			if(!empty($cite['author_url']))
+				$author='<a href="'.$cite['author_url'].'" rel="external nofollow">'.$cite['author'].'</a>';
+			else
+				$author=$cite['author'];
+			
+			$authorComment='<a href="#comment-'.$cite['comment_ID'].'">'.$cite['author'].'</a>';
+
+			$str="回复@{$authorComment}：<br />";
+			if($isCite)
 			{
-				$data['content']='<blockquote>引用 '.$cite['author'].' 的话：<br />'.$cite['content'].'</blockquote>'.$data['content'];
+				$str.='<blockquote>引用 '.$author.' 的话：<br />'.$cite['content'].'</blockquote>';
 			}
+			$data['content']=$str.$data['content'];
 		}
 		$res=$this->db->insert(self::COMMENTS,$data);
 

@@ -11,6 +11,7 @@ class Comment extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->library('form_validation');
+		$this->load->helper('cookie');
 	}
 
 	/**
@@ -33,6 +34,10 @@ class Comment extends CI_Controller
 		}
 		else
 		{
+			$this->input->set_cookie('author',$this->input->post('author'),86400);
+			$this->input->set_cookie('author_email',$this->input->post('email'),86400);
+			$this->input->set_cookie('author_url',$this->input->post('url'),86400);
+
 			$post=$this->post_mdl->getPostBySlug($this->input->post('postSlug'),'post_ID,allow_comment');
 
 			if($post == FALSE)
@@ -69,7 +74,7 @@ class Comment extends CI_Controller
 				$this->session->set_flashdata('commentMsg','您的评论貌似有点问题，请检查后再试试。');	
 			}
 
-			redirect('post/'.$this->input->post('postSlug'));
+			redirect('post/'.$this->input->post('postSlug')."#comments");
 		}
 	}
 

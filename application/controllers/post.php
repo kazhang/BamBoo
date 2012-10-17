@@ -10,6 +10,7 @@ class Post extends MY_Controller
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->helper('url');
 	}
 
 	/**
@@ -34,7 +35,7 @@ class Post extends MY_Controller
 
 		$post['tags']=$this->tag_mdl->getTagsByPostID($post['post_ID']);
 		$post['categories']=$this->category_mdl->getCategoriesByPostID($post['post_ID']);
-		$post['comments']=$this->comment_mdl->getComments($post['post_ID'],1);
+		$post['comments']=$this->comment_mdl->getComments($post['post_ID'],1,'*',NULL,'created desc');
 
 		$data['pageTitle']=$post['title'];
 		$data['pageDescription']=mb_strimwidth(strip_tags(Common::getExcerpt($post['content'])),0,100,'...');
@@ -42,6 +43,10 @@ class Post extends MY_Controller
 		$data['curPage']='post';
 		$data['parsedFeed']='parsed feed';
 		$data['post']=$post;
+
+		$data['cmtAuthor']=$this->input->cookie('author');
+		$data['cmtAuthorEmail']=$this->input->cookie('author_email');
+		$data['cmtAuthorUrl']=$this->input->cookie('author_url');
 
 		$data['commentMsg']=$this->session->flashdata('commentMsg');
 		if($data['commentMsg'] == FALSE)
