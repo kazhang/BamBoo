@@ -40,7 +40,15 @@ class Page extends MY_Controller
 		$data['curPage']=$slug;
 		$data['post']=$post;
 
+		$data['cmtAuthor']=$this->input->cookie('author');
+		$data['cmtAuthorEmail']=$this->input->cookie('author_email');
+		$data['cmtAuthorUrl']=$this->input->cookie('author_url');
+
 		$data['commentMsg']=$this->session->flashdata('commentMsg');
+		if($data['commentMsg'] == FALSE)
+		{
+			unset($data['commentMsg']);
+		}
 
 		$this->loadThemeView('page',$data);
 	}
