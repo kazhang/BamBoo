@@ -65,10 +65,11 @@ class Home extends MY_Controller
 		if(!is_numeric($page)||$page<1)
 			$page=1;
 
+		$slug=urldecode($slug);
 		$tag=$this->tag_mdl->getTagBySlug($slug);
 		if($tag === FALSE)
 		{
-			show_error('标签不存在或已被主人删除');
+			show_error('标签不存在或已被主人删除'.$slug);
 			exit();
 		}
 
@@ -107,6 +108,15 @@ class Home extends MY_Controller
 			$page=1;
 
 		$category=$this->category_mdl->getCategoryBySlug($slug);
+
+		if($category === FALSE)
+		{
+			$slug=urldecode($slug);
+			$category=$this->category_mdl->getCategoryBySlug($slug);
+			if($category === FALSE)
+				show_error('目录不存在或已被主人删除');
+		}
+
 		$categoryID=array($category['category_ID']);
 		if($category['parent_ID']==0)
 		{

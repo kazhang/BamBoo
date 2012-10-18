@@ -86,7 +86,7 @@ class Common
 	static public function repairSlugName($str,$default = NULL,$maxLength = 100,$charset = 'UTF-8')
 	{
 		$str = str_replace(array("'", ":", "\\", "/"), "", $str);
-		$str = str_replace(array("+", ",", " ", ".", "?", "=", "&", "!", "<", ">", "(", ")", "[", "]", "{", "}"), "_", $str);
+		$str = str_replace(array("+", ",", " ", ".", "?", "=", "&", "!", "<", ">", "(", ")", "[", "]", "{", "}","%"), "_", $str);
 		//$str = trim($str,'_');
 		$str = empty($str) ? $default : $str;
 

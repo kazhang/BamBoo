@@ -26,6 +26,7 @@ class Post extends MY_Controller
 			redirect(site_url());
 		}
 
+		$slug=urldecode($slug);
 		$post=$this->post_mdl->getPostBySlug($slug);
 
 		if($post == FALSE)
