@@ -45,6 +45,9 @@ class Post extends MY_Controller
 		$data['parsedFeed']='parsed feed';
 		$data['post']=$post;
 
+		$data['prePost']=$this->post_mdl->getPrePost($post['created'],'title,slug');
+		$data['nextPost']=$this->post_mdl->getNextPost($post['created'],'title,slug');
+
 		$data['cmtAuthor']=$this->input->cookie('author');
 		$data['cmtAuthorEmail']=$this->input->cookie('author_email');
 		$data['cmtAuthorUrl']=$this->input->cookie('author_url');

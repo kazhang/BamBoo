@@ -11,7 +11,7 @@
 <?php foreach($plugins as $plugin):?>
 		<tr class="no-op">
 			<td><input type="checkbox" name="choosed[]" value="<?=$plugin['name']?>"/></td>
-			<td style="text-align:left"><?=$plugin['name']?><div class="op"><?=anchor('admin/plugins/activate/'.$plugin['directory'],'启用')?></div></td>
+			<td style="text-align:left"><?=$plugin['name']?><div class="op"><?=anchor('admin/plugins/activate/'.$plugin['directory'],'启用')?> | <?=anchor('admin/plugins/deactivate/'.$plugin['directory'],'停用')?></div></td>
 			<td style="text-align:left"><?=$plugin['description']?><br /><?=$plugin['version']?>版本|作者为<?=$plugin['author']?></td>
 		</tr>
 <?php endforeach;?>

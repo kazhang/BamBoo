@@ -11,6 +11,12 @@
 .post .post-title{text-align:center;font-size:28px;font-weight:bold;margin:16px 0px;}
 .post .meta-date{font-family:Georgia,serif;font-size:16px;text-align:center;color:#999}
 .post .content{padding:10px 0px;line-height:26px;}
+.post .content h1{color:#005884}
+.post .content h2{color:#006599}
+.post .content h3{color:#0073AD}
+.post .content h4{color:#0081C1}
+.post .content h5{color:#008ED6}
+.post .content h6{color:#009CEA}
 .comment{padding:10px 0px;border-bottom:1px dashed #DDD;}
 .comment .comment-meta{background-color:#F5F4F6;}
 .comment .comment-content{padding-left:10px;}
@@ -18,3 +24,4 @@
 #respond{width:390px;padding:10px;border:1px solid #DDD;border-radius:5px;}
 .reply-op{display:none;}
 .btn-more{position:absolute;bottom:10px;right:10px;}
+.footer{font-size:13px;}

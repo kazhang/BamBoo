@@ -45,6 +45,23 @@ class Plugins extends MY_Auth_Controller
 		}
 		redirect('admin/plugins');
 	}
+
+	/**
+	 * Deactive plugin
+	 *
+	 * @access	public
+	 * @param	string	name
+	 * @return	void
+	 */
+	public function deactivate($name)
+	{
+		$plugin=$this->plugin_mdl->get($name);
+		if($plugin && is_array($plugin))
+		{
+			if($this->plugin_mdl->deactive($plugin['directory']))
+				redirect('admin/plugins');
+		}
+	}
 }
 /* End of file tags.php */
 /* Location: ./application/controllers/admin/tags.php */

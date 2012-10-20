@@ -339,6 +339,56 @@ class Post_mdl extends CI_Model
 
 		return $this->db->count_all_results();
 	}
+
+	/**
+	 * Get next post
+	 *
+	 * @access	public
+	 * @param	int		post created time
+	 * @param	string	field
+	 * @return	mixed	{array|FALSE}
+	 */
+	public function getNextPost($created,$field = '*')
+	{
+		$this->db->select($field);
+		$this->db->where('created <',$created);
+		$this->db->where('status',1);
+		$this->db->where('type','post');
+		$this->db->order_by('created','desc');
+		$this->db->limit(1);
+
+		$query=$this->db->get(self::POSTS);
+		if($query->num_rows()>0)
+		{
+			return $query->row_array();
+		}
+		return FALSE;
+	}
+	
+	/**
+	 * Get previous post
+	 *
+	 * @access	public
+	 * @param	int		post created time
+	 * @param	string	field
+	 * @return	mixed	{array|FALSE}
+	 */
+	public function getPrePost($created,$field = '*')
+	{
+		$this->db->select($field);
+		$this->db->where('created >',$created);
+		$this->db->where('status',1);
+		$this->db->where('type','post');
+		$this->db->order_by('created','asc');
+		$this->db->limit(1);
+
+		$query=$this->db->get(self::POSTS);
+		if($query->num_rows()>0)
+		{
+			return $query->row_array();
+		}
+		return FALSE;
+	}
 }
 /* End of file post_mdl.php */
 /* Location: ./application/models/post_mdl.php */

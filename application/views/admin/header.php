@@ -14,7 +14,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container-fluid">
-			<a class="brand" href="<?=site_url('admin/home')?>">BamBoo</a>
+			<a class="brand" href="<?=site_url()?>">BamBoo</a>
 			<ul class="nav">
 				<li <?=($cur == 'posts' ? 'class="active"':'')?>><?=anchor('#','文章<b class="caret"></b>','class="dropdown-toggle" data-toggle="dropdown"')?>
 					<ul class="dropdown-menu" role="menu">

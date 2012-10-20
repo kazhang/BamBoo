@@ -34,6 +34,30 @@ class Plugin_mdl extends CI_Model
 		$this->db->query("UPDATE `settings` SET VALUE='$activePlugins' WHERE `name`='active_plugins'");
 	}
 
+	/**
+	 * Deactive a plugin
+	 *
+	 * @access	public
+	 * @param	plugin
+	 * @return 	boolean
+	 */
+	public function deactive($plugin)
+	{
+		foreach($this->activePlugins as $key=>$value)
+		{
+			if($plugin==$value['directory'])
+			{
+				unset($this->activePlugins[$key]);
+				break;
+			}
+		}	
+
+		$activePlugins=serialize($this->activePlugins);
+		$this->db->query("UPDATE `settings` SET VALUE='$activePlugins' WHERE `name`='active_plugins'");
+
+		return $this->db->affected_rows()>0;
+	}
+
 
 	/**
 	 * Get information of a plugin
