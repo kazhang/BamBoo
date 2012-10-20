@@ -35,7 +35,7 @@ class Feed extends CI_Controller
 	 */
 	public function generateFeed()
 	{
-		$posts=$this->post_mdl->getPosts('*',1,'created desc',10);
+		$posts=$this->post_mdl->getPosts('*',1,'created desc',B_PER_PAGE);
 
 		$this->feedwriter->setTitle(settingItem('blog_title'));
 		$this->feedwriter->setLink(site_url());
@@ -59,6 +59,7 @@ class Feed extends CI_Controller
 		{
 			foreach($posts as $post)
 			{
+				if($post['allow_feed']==0)continue;
 				$permalink=site_url('post/'.$post['slug']);
 				$description=Common::getExcerpt($post['content']);
 				$author=$this->user_mdl->getAuthorName($post['author_ID']);

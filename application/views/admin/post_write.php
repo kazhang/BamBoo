@@ -39,8 +39,8 @@
 			</div>
 <?php endif;?>
 			<br />
-			<div><input type="checkbox" name="allowComment" <?php if(isset($post) && $post['allow_comment']==1) echo 'checked';?>/>允许评论</div>
-			<div><input type="checkbox" name="allowFeed" <?php if(isset($post) && $post['allow_feed']==1) echo 'checked';?>/>允许Feed</div>
+			<div><input type="checkbox" name="allowComment" <?php if(!isset($post)||$post['allow_comment']==1) echo 'checked';?>/>允许评论</div>
+			<div><input type="checkbox" name="allowFeed" <?php if(!isset($post) || $post['allow_feed']==1) echo 'checked';?>/>允许Feed</div>
 			<br />
 			<div><input type="submit" value="保存为草稿" class="btn"/><input type="submit" name="publish" value="发布" class="btn btn-primary" style="margin-left:10px;"/></div>
 		</div>
