@@ -8,7 +8,7 @@ $this->load->view('header');
 		<div class="entry">
 			<div class="row">
 				<div class="time span1">
-					<time datetime="<?=date('Y-m-d')?>" pubdate></time>
+					<time datetime="<?=date('Y-m-d')?>"></time>
 					<div class="day"><?=date('j',$post['created'])?></div>
 					<?=date('Y-m',$post['created'])?>
 				</div>
