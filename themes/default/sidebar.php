@@ -18,4 +18,9 @@
 <ul>
 <?php $this->plugin->trigger('Widget::Comments::Recent_comments','<li><a href="{userLink}" rel="external nofollow">{user}</a> 发表在 <a href="{postLink}">{title}</a></li>');?>
 </ul>
-<script type="text/javascript" src="http://china-addthis.googlecode.com/svn/trunk/addfeed.js" charset="UTF-8"></script><span class="addfeed_cn"><a href="<?=site_url()?>/feed" title="订阅我吧"><img src="http://addfeed.cn/images/f1.gif" alt="分享家:Addfeed" align="absmiddle" /></a></span>
+<h5 class="title">链接</h5>
+<ul>
+	<li><a href="http://www.codeigniter.com" title="CodeIgniter官方站点" rel="external nofollow">CodeIgniter</a></li>
+	<li><a href="http://wiki.wamaker.net/" title="Wiki">炸鸡的Wiki</a></li>
+</ul>
+<script type="text/javascript" src="http://china-addthis.googlecode.com/svn/trunk/addfeed.js" charset="UTF-8"></script><span class="addfeed_cn"><a href="<?=site_url()?>feed" title="订阅我吧"><img src="http://addfeed.cn/images/f1.gif" alt="分享家:Addfeed"/></a></span>

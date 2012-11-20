@@ -39,7 +39,7 @@ class Settings extends MY_Auth_Controller
 
 			foreach($nSetting as $key=>$value)
 			{
-				if($setting[$key] != $value)
+				if($settings[$key] != $value)
 					$this->setting_mdl->updateSettingItem($key,$value);
 			}
 
