@@ -16,8 +16,8 @@
 		<div class="container-fluid">
 			<a class="brand" href="<?=site_url()?>">BamBoo</a>
 			<ul class="nav">
-				<li <?=($cur == 'posts' ? 'class="active"':'')?>><?=anchor('#','文章<b class="caret"></b>','class="dropdown-toggle" data-toggle="dropdown"')?>
-					<ul class="dropdown-menu" role="menu">
+				<li class="dropdown <?=($cur == 'posts' ? 'active':'')?>"><?=anchor('#','文章<b class="caret"></b>','id="drop1" class="dropdown-toggle" data-toggle="dropdown"')?>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
 						<li><?=anchor('admin/posts','所有文章')?></li>
 						<li><?=anchor('admin/posts/write','写文章')?></li>
 						<li><?=anchor('admin/posts/categories','分类目录')?></li>
@@ -28,7 +28,12 @@
 				<li <?=($cur == 'comments' ? 'class="active"':'')?>><?=anchor('admin/comments','评论')?></li>
 				<li <?=($cur == 'plugins' ? 'class="active"':'')?>><?=anchor('admin/plugins','插件')?></li>
 				<li <?=($cur == 'users' ? 'class="active"':'')?>><?=anchor('admin/users','用户')?></li>
-				<li <?=($cur == 'settings' ? 'class="active"':'')?>><?=anchor('admin/settings','设置')?></li>
+				<li class="dropdown <?=(($cur == 'settings')||($cur == 'mail_settings') ? 'active':'')?>"><?=anchor('#','设置<b class="caret"></b>','id="drop2" class="dropdown-toggle" data-toggle="dropdown"')?>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
+						<li><?=anchor('admin/settings','基本设置')?></li>
+						<li><?=anchor('admin/settings/email','邮件设置')?></li>
+					</ul>
+				</li>
 			</ul>
 				<div class="logout"><?=anchor('admin/login/logout','<i class="icon-white icon-off"></i>退出登录')?></div>
 		</div>

@@ -15,4 +15,5 @@
 	<li <?=($cur == 'users' ? 'class="active"':'')?>><?=anchor('admin/users','<i class="icon-user"></i>用户')?></li>
 	<li class="nav-header">设置</li>
 	<li <?=($cur == 'settings' ? 'class="active"':'')?>><?=anchor('admin/settings','<i class="icon-wrench"></i>基本设置')?></li>
+	<li <?=($cur == 'mail_settings' ? 'class="active"':'')?>><?=anchor('admin/settings/email','<i class="icon-envelope"></i>邮件设置')?></li>
 </ul>

@@ -38,7 +38,7 @@ class Comment extends CI_Controller
 			$this->input->set_cookie('author_email',$this->input->post('email'),86400);
 			$this->input->set_cookie('author_url',$this->input->post('url'),86400);
 
-			$post=$this->post_mdl->getPostBySlug($this->input->post('postSlug'),'post_ID,allow_comment');
+			$post=$this->post_mdl->getPostBySlug($this->input->post('postSlug'),'post_ID,author_ID,allow_comment');
 
 			if($post == FALSE)
 			{
@@ -67,7 +67,43 @@ class Comment extends CI_Controller
 
 			if($cid !== FALSE)
 			{
-				$this->session->set_flashdata('commentMsg','评论发布成功，正在等待审核。');	
+				$this->session->set_flashdata('commentMsg','感谢您的评论，小的这就通知博主来审核。');	
+
+				$this->load->model('user_mdl');
+				$post_author=$this->user_mdl->getUserBy('user_ID',$post['author_ID'],'email');
+				if($post_author===FALSE)
+					exit();
+
+				if(!defined('SAE_TMP_PATH'))
+				{
+					$this->load->library('email');
+
+					$config['protocol']='smtp';
+					$config['smtp_host']=settingItem('smtp_host');
+					$config['smtp_user']=settingItem('smtp_user');
+					$config['smtp_pass']=settingItem('smtp_pass');
+					$this->email->initialize($config);
+
+					$this->email->from(settingItem('smtp_user'),'BamBoo Blog');
+					$this->email->to($post_author['email']);
+
+					$this->email->subject('有新的回复');
+					$this->email->message('主人，有新的回复，赶紧去查看吧'.site_url('admin/comments'));
+
+					$this->email->send();
+				}
+				else
+				{
+					$mail=new SaeMail();
+					$ret=$mail->quickSend(	
+						$post_author['email'],
+						'有新的回复',
+						'主人，有新的回复，赶紧去查看吧'.site_url('admin/comments'),
+						settingItem('smtp_user'),
+						settingItem('smtp_pass'),
+						settingItem('smtp_host')
+					);
+				}
 			}
 			else
 			{

@@ -53,6 +53,46 @@ class Settings extends MY_Auth_Controller
 			$this->load->view('admin/settings',$data);
 		}
 	}
+
+	/**
+	 * 邮件设置
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function email()
+	{
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('smtp_host','SMTP地址','trim|required');
+		$this->form_validation->set_rules('smtp_user','SMTP用户名','trim|required');
+		$this->form_validation->set_rules('smtp_pass','SMTP密码','required');
+
+		$this->load->model('setting_mdl');
+		$settings=$this->setting_mdl->getSettings();
+
+		if($this->form_validation->run() === TRUE)
+		{
+			$nSetting['smtp_host']=$this->input->post('smtp_host');
+			$nSetting['smtp_user']=$this->input->post('smtp_user');
+			$nSetting['smtp_pass']=$this->input->post('smtp_pass');
+
+			foreach($nSetting as $key=>$value)
+			{
+				if($settings[$key] != $value)
+					$this->setting_mdl->updateSettingItem($key,$value);
+			}
+
+			redirect('admin/settings/email');
+		}
+		else
+		{
+			$data['pageTitle']='邮件设置';
+			$data['cur']='mail_settings';
+			$data['setting']=$settings;
+			$this->load->view('admin/mail_settings',$data);
+		}
+	}	
 }
 /* End of file settings.php */
 /* Location: ./application/controllers/admin/settings.php */

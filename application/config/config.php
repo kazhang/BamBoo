@@ -17,7 +17,7 @@
 if(!defined('SAE_TMP_PATH'))
 	$config['base_url']	= 'http://127.0.0.1/bamboo/';
 else
-	$config['base_url']	= 'http://bambooblog.sinaapp.com/bamboo/';
+	$config['base_url']	= 'http://bambooblog.sinaapp.com/';
 
 /*
 |--------------------------------------------------------------------------
