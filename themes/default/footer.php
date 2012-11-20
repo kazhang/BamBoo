@@ -15,7 +15,7 @@
 <script src="<?=base_url('application/third_party/ueditor/third-party/SyntaxHighlighter/shCore.js')?>" type="text/javascript"></script>
 <?php else:?>
 <script src="http://<?=$_SERVER['HTTP_HOST'].'/application/views/bootstrap/js/bootstrap.min.js'?>" type="text/javascript"></script>
-<script src="http://<?=$_SERVER['HTTP_HOST'].'/application/third_party/ueditor/third-party/SyntaxHighlighter/shCore.js')?>" type="text/javascript"></script>
+<script src="http://<?=$_SERVER['HTTP_HOST'].'/application/third_party/ueditor/third-party/SyntaxHighlighter/shCore.js'?>" type="text/javascript"></script>
 <?php endif;?>
 <script type="text/javascript">
      SyntaxHighlighter.all()
