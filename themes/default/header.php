@@ -3,15 +3,21 @@
 <head>
 	<title><?=$pageTitle?> | <?=settingItem('blog_title')?></title>
 	<meta charset="utf-8">
-	<meta type="Keywords" content="<?=$pageKeywords?>">
 	<meta type="Description" content="<?=$pageDescription?>">
 	<meta type="generator" content="BamBoo blog">
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<?php if(!defined('SAE_TMP_PATH')):?>
 	<link href="<?=base_url('application/views/bootstrap/css/bootstrap.min.css')?>" rel="stylesheet">
 	<link href="<?=base_url('application/third_party/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css')?>" rel="stylesheet">
 	<link href="<?=base_url('themes/default/style.css')?>" rel="stylesheet">
-	<link rel="alternate" type="application/rss+xml" title="<?=settingItem('blog_title')?> Feed" href="<?=site_url()?>/feed/"> 
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript" src="<?=base_url('themes/default/function.js')?>"></script>
+<?php else:?>
+	<link href="http://<?=$_SERVER['HTTP_HOST'].'/application/views/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
+	<link href="http://<?=$_SERVER['HTTP_HOST'].'/application/third_party/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css'?>" rel="stylesheet">
+	<link href="http://<?=$_SERVER['HTTP_HOST'].'/themes/default/style.css'?>" rel="stylesheet">
+	<script type="text/javascript" src="http://<?=$_SERVER['HTTP_HOST'].'/themes/default/function.js'?>"></script>
+<?php endif;?>
+	<link rel="alternate" type="application/rss+xml" title="<?=settingItem('blog_title')?> Feed" href="<?=site_url()?>/feed/"> 
 </head>
 <body>
 <div class="container">
