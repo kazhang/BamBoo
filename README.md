@@ -4,4 +4,18 @@ BamBoo Blog是一个简洁(lòu)的基于[CodeIgniter 2.1.2](http://www.codeigni
 * 追求简单自由的撰写环境。
 * 喜欢研究PHP代码的初级玩家。
 * 自虐倾向。
+
 其他用户请点此下载[Wordpress](http://wordpress.org/download/)，不用谢。
+
+其实只是给自己的[博客](http://blog.wamaker.net)用的。
+
+安装
+----
+因为本来是写来给自己用的，所以还没写安装程序。
+
+以下是手动安装过程：
+1. 下载源代码。
+2. 添加数据库bamboo,将db.sql内数据导入数据库。
+3. 按照自己的实际情况，修改application/config/database.php里面的username,password,database。
+4. 修改application/config/config.php里面的$config['base_url']为bamboo的访问地址。
+5. 访问http://访问地址/index.php/admin。登录管理后台，初始用户名为admin，密码为BamBooBlog。在基本设置中对网站进行设置，在邮件设置中设置接收回复通知的邮箱。
