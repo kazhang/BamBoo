@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-	<title><?=$pageTitle?> | <?=settingItem('blog_title')?></title>
 	<meta charset="utf-8">
-	<meta type="Description" content="<?=$pageDescription?>">
-	<meta type="generator" content="BamBoo blog">
+	<title><?=$pageTitle?> | <?=settingItem('blog_title')?></title>
+	<meta name="Description" content="<?=$pageDescription?>">
+	<meta name="generator" content="BamBoo blog">
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <?php if(!defined('SAE_TMP_PATH')):?>
 	<link href="<?=base_url('application/views/bootstrap/css/bootstrap.min.css')?>" rel="stylesheet">
