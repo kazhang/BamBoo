@@ -23,7 +23,7 @@ class Comment extends CI_Controller
 	 */
 	public function index($postID)
 	{
-		$this->form_validation->set_rules('author','称呼','required|trim|htmlspecialchars');
+		$this->form_validation->set_rules('author','称呼','trim|htmlspecialchars');
 		$this->form_validation->set_rules('email','邮件','required|valid_email|trim');
 		$this->form_validation->set_rules('postSlug','别名','required');
 		$this->form_validation->set_rules('url','网址','trim|prep_url');
@@ -34,6 +34,9 @@ class Comment extends CI_Controller
 		}
 		else
 		{
+			if($this->input->post('sMe')=='0')
+				show_error("你是机器人么？");
+
 			$this->input->set_cookie('author',$this->input->post('author'),86400);
 			$this->input->set_cookie('author_email',$this->input->post('email'),86400);
 			$this->input->set_cookie('author_url',$this->input->post('url'),86400);

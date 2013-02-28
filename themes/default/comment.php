@@ -27,7 +27,7 @@
 			<label class="reply-op"><input type="checkbox" name="cite"/>同时引用原文</label>
 			<p>电子邮件地址不会被公开。</p>
 				<div class="input-prepend">
-				<span class="add-on">@</span><input type="text" name="author" placeholder="称呼（必填）" required value="<?=$cmtAuthor?$cmtAuthor:''?>"/>
+				<span class="add-on">@</span><input type="text" name="author" placeholder="称呼（必填）" value="<?=$cmtAuthor?$cmtAuthor:''?>" />
 				</div>
 				<div class="input-prepend">
 					<span class="add-on"><i class="icon-envelope"></i></span><input type="email" name="email" placeholder="电子邮件（必填）" required  value="<?=$cmtAuthorEmail?$cmtAuthorEmail:''?>"/>
@@ -35,8 +35,9 @@
 				<div class="input-prepend">
 					<span class="add-on"><i class="icon-home"></i></span><input type="url" name="url" placeholder="您的网站"  value="<?=$cmtAuthorUrl?$cmtAuthorUrl:''?>"/>
 				</div>
-				<textarea name="content" placeholder="您的评论..." class="span5" rows="5"></textarea>
+				<textarea name="content" placeholder="您的评论..." class="span5" rows="5" onchange="comment.sMe()"></textarea>
 				<input type="hidden" name="postSlug" value="<?=$post['slug']?>"/><input type="hidden" name="replyTo" value="0" id="replyTo"/>
+				<input type="hidden" name="sMe" value=0 id="sMe"/>
 				<div><input type="submit" class="btn btn-primary" value="发表评论"/></div>
 			</form>
 		</div>

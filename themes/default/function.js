@@ -14,6 +14,9 @@ var comment={
 		}
 		return false;
 	},
+	sMe:function(){
+		$("#sMe").val(1);
+	}
 };		
 
 $(document).ready(function(){
