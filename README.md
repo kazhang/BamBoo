@@ -21,3 +21,12 @@ BamBoo Blog是一个简洁(lòu)的基于[CodeIgniter 2.1.2](http://www.codeigni
 4. 修改application/config/config.php里面的$config['base_url']为bamboo的访问地址。
 5. 修改application/third_party/ueditor/editor_config.js里面的URL为ueditor在的对于网站根目录的绝对地址。
 6. 访问 http://网站访问地址/index.php/admin。登录管理后台，初始用户名为admin，密码为BamBooBlog。在基本设置中对网站进行设置，在邮件设置中设置接收回复通知的邮箱。
+
+Installation
+----
+1. Git clone the source.
+2. Create database bamboo, source db.sql.
+3. Change username, password, database in application/config/database.php according to your settings.
+4. Change $config['base_url'] in application/config/config.php to your website's base url.
+5. Change URL in application/third_party/ueditor/editor_config.js to you absolute directory path.
+6. Open http://your-website-domain/index.php/admin in your browser. Login the backend using admin/BamBooBlog.
